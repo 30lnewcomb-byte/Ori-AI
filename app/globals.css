@@ -450,3 +450,8 @@ a:focus-visible,button:focus-visible{outline:2px solid #8bb9ff;outline-offset:4p
  .status-section-heading{align-items:flex-start;flex-direction:column}
  .status-incident-update{grid-template-columns:1fr;gap:6px}
 }
+
+
+.status-check-detail{display:block;margin-top:7px;color:#8290a2;font:9px/1.6 var(--font-mono)}
+.status-updated>a{color:#9bbce7;font:10px var(--font-mono);text-decoration:underline;text-underline-offset:3px}
+.status-indicator-degraded{background:#d0ad70;box-shadow:0 0 0 3px rgba(208,173,112,.12)}

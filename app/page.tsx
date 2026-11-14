@@ -1,74 +1,115 @@
 import Link from "next/link";
 
-const products = [
-  { number: "01", name: "Ori Platform", type: "AI workspace", description: "The place to interact with Ori and the intelligence behind it.", href: "https://ori-platform.vercel.app", link: "Open Ori Platform" },
-  { number: "02", name: "Ori Developer Platform", type: "Developer tools", description: "A dedicated workspace for projects and the tools being built for developers.", href: "https://ori-developer-platform.vercel.app", link: "Visit developer platform" },
-  { number: "03", name: "Ori Mechanic", type: "Engineering project", description: "An independent project exploring safer, more reliable ways for software to carry out technical work.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", link: "Explore the repository" }
+const projects = [
+  {
+    number: "01",
+    name: "Ori Platform",
+    category: "AI workspace",
+    status: "Available",
+    description: "The user-facing Ori experience and the intelligence services connected to it.",
+    href: "https://ori-platform.vercel.app",
+    action: "Open Ori Platform"
+  },
+  {
+    number: "02",
+    name: "Ori Developer Platform",
+    category: "Developer tools",
+    status: "In development",
+    description: "A technical workspace for projects, documentation, and the developer tools taking shape around Ori.",
+    href: "https://ori-developer-platform.vercel.app",
+    action: "Visit developer platform"
+  },
+  {
+    number: "03",
+    name: "Ori Mechanic",
+    category: "Open-source engineering",
+    status: "In development",
+    description: "An independent project exploring controlled, permission-aware software automation.",
+    href: "https://github.com/30lnewcomb-byte/ori-mechanic",
+    action: "View source on GitHub"
+  }
 ];
 
 export default function HomePage() {
   return (
     <main id="main">
-      <section className="hero">
-        <div className="hero-grid" aria-hidden="true" />
+      <section className="hero hero-editorial">
         <div className="hero-content">
-          <div className="eyebrow"><span className="eyebrow-dot" /> INTRODUCING ORI</div>
-          <h1>Technology should make the complicated <span>feel possible.</span></h1>
-          <p className="hero-copy">Ori is an independent technology project exploring useful AI, thoughtful software, and better tools for people who build.</p>
+          <div className="eyebrow"><span className="eyebrow-dot" /> INDEPENDENT TECHNOLOGY</div>
+          <h1>Building <span>Ori.</span></h1>
+          <p className="hero-copy">An independent technology project bringing together AI systems, developer tools, and practical software.</p>
           <div className="hero-actions">
-            <Link className="button button-primary" href="/products">Explore what we're building <span aria-hidden="true">↗</span></Link>
-            <Link className="button button-secondary" href="/company">Get to know Ori</Link>
+            <Link className="button button-primary" href="/products">Explore the projects <span aria-hidden="true">↗</span></Link>
+            <Link className="button button-secondary" href="/company">About Ori</Link>
           </div>
-          <div className="hero-footnote"><span className="status-line" /> Built with curiosity. Improved through real work.</div>
+          <div className="hero-footnote">A growing body of work. Built and documented in the open.</div>
         </div>
-        <div className="hero-art" aria-hidden="true">
-          <div className="orbit orbit-one" /><div className="orbit orbit-two" /><div className="orbit orbit-three" />
-          <div className="core"><span>o</span></div>
-          <div className="orbit-label label-top">INTELLIGENCE</div>
-          <div className="orbit-label label-right">TOOLS</div>
-          <div className="orbit-label label-bottom">ENGINEERING</div>
-          <div className="art-cross cross-one" /><div className="art-cross cross-two" />
-        </div>
+        <aside className="hero-index" aria-label="Ori project overview">
+          <div className="hero-index-heading"><span>PROJECT INDEX</span><span>01—03</span></div>
+          {projects.map((project) => (
+            <a className="hero-index-row" href={project.href} key={project.number} target="_blank" rel="noreferrer">
+              <span className="hero-index-number">{project.number}</span>
+              <span className="hero-index-copy"><strong>{project.name}</strong><small>{project.category}</small></span>
+              <span className={project.status === "Available" ? "project-status status-available" : "project-status"}>{project.status}</span>
+              <span className="hero-index-arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
+          <p className="hero-index-note">Project status is stated plainly. Work in progress is not presented as a finished product.</p>
+        </aside>
       </section>
 
       <section className="intro-band section-wrap">
-        <p className="section-kicker">A connected set of ideas</p>
+        <p className="section-kicker">WHAT IS ORI?</p>
         <div className="intro-band-content">
-          <h2>One direction.<br /><span>Different ways to build.</span></h2>
-          <p>Ori brings together AI experiences, developer tools, and independent engineering projects. Each has a distinct job. Together, they form a growing body of work.</p>
+          <h2>One name.<br /><span>Several distinct projects.</span></h2>
+          <p>Ori is not a single app. It is a collection of related projects with separate responsibilities—from an AI workspace to developer infrastructure and independent engineering experiments.</p>
         </div>
       </section>
 
       <section className="products-section section-wrap">
         <div className="section-heading">
-          <div><p className="section-kicker">THE ORI ECOSYSTEM</p><h2>Explore what we're building.</h2></div>
-          <Link className="text-link" href="/products">All products <span aria-hidden="true">↗</span></Link>
+          <div><p className="section-kicker">PROJECTS</p><h2>Explore the work.</h2></div>
+          <Link className="text-link" href="/products">Project directory <span aria-hidden="true">↗</span></Link>
         </div>
         <div className="product-list">
-          {products.map((product) => (
-            <article className="product-row" key={product.number}>
-              <span className="product-number">{product.number}</span>
-              <div className="product-copy"><span className="product-type">{product.type}</span><h3>{product.name}</h3><p>{product.description}</p></div>
-              <a className="row-link" href={product.href} target="_blank" rel="noreferrer" aria-label={product.link}>{product.link} <span aria-hidden="true">↗</span></a>
+          {projects.map((project) => (
+            <article className="product-row" key={project.number}>
+              <span className="product-number">{project.number}</span>
+              <div className="product-copy">
+                <span className="product-type">{project.category}</span>
+                <h3>{project.name}</h3>
+                <p>{project.description}</p>
+              </div>
+              <div className="product-row-action">
+                <span className={project.status === "Available" ? "project-status status-available" : "project-status"}>{project.status}</span>
+                <a className="row-link" href={project.href} target="_blank" rel="noreferrer">{project.action} <span aria-hidden="true">↗</span></a>
+              </div>
             </article>
           ))}
         </div>
       </section>
 
       <section className="principles-section">
-        <div className="section-wrap principles-inner">
-          <div><p className="section-kicker">HOW WE APPROACH THE WORK</p><h2>Build carefully.<br /><span>Make it matter.</span></h2></div>
-          <div className="principle-grid">
-            <article><span>01 / CLARITY</span><h3>Useful over impressive.</h3><p>Technology should solve a real problem. Complexity is not a feature by itself.</p></article>
-            <article><span>02 / HONESTY</span><h3>Show what is real.</h3><p>Be clear about what works today, what is experimental, and what still needs work.</p></article>
-            <article><span>03 / CRAFT</span><h3>Details are the product.</h3><p>Good engineering is thoughtful, reliable, understandable, and improved over time.</p></article>
+        <div className="section-wrap principles-editorial">
+          <div className="principles-heading">
+            <p className="section-kicker">WORKING PRINCIPLES</p>
+            <h2>Make the work<br /><span>earn its place.</span></h2>
+            <p>Good technology is more than a convincing demo. It should be understandable, useful, and honest about its limits.</p>
+          </div>
+          <div className="principle-list">
+            <article><span>01</span><div><h3>Build for a reason.</h3><p>Every feature should have a clear job. Complexity needs to solve a real problem.</p></div></article>
+            <article><span>02</span><div><h3>Be precise about progress.</h3><p>Working features, experiments, and future plans should never be blurred together.</p></div></article>
+            <article><span>03</span><div><h3>Leave things better.</h3><p>Prefer maintainable systems, careful changes, and improvements that can be verified.</p></div></article>
           </div>
         </div>
       </section>
 
       <section className="closing-cta section-wrap">
-        <div><p className="section-kicker">KEEP EXPLORING</p><h2>There is more to build.</h2><p>Follow the projects, explore the technology, or take a look at the developer experience.</p></div>
-        <Link className="button button-primary" href="/developers">Explore the developer platform <span aria-hidden="true">↗</span></Link>
+        <div><p className="section-kicker">FOLLOW THE WORK</p><h2>See how Ori is built.</h2><p>Explore the projects and their source code, or read the developer documentation.</p></div>
+        <div className="closing-actions">
+          <Link className="button button-primary" href="/developers">Developer resources <span aria-hidden="true">↗</span></Link>
+          <a className="text-link" href="https://github.com/30lnewcomb-byte" target="_blank" rel="noreferrer">Ori on GitHub <span aria-hidden="true">↗</span></a>
+        </div>
       </section>
     </main>
   );

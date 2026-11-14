@@ -4,13 +4,13 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ori-ai.vercel.app"),
   title: {
     default: "Ori — Thoughtful technology, built to be useful",
     template: "%s — Ori"
   },
   description:
     "Explore Ori, an independent technology project building AI tools, developer experiences, and practical software.",
+  icons: { icon: "/ori-mark.svg" },
   openGraph: {
     title: "Ori",
     description: "Thoughtful technology, built to be useful.",

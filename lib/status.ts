@@ -62,7 +62,7 @@ function isStatusDocument(value: unknown): value is StatusDocument {
       typeof component.description === "string" &&
       typeof component.state === "string" &&
       allowedStates.has(component.state as ComponentState) &&
-      (component.url === undefined || typeof component.url === "string") &&
+      (component.url === undefined || typeof component.url === "string")
     );
   });
 }

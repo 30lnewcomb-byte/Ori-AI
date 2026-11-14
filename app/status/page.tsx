@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const stateLabels: Record<ComponentState | OverallState, string> = {
   operational: "Operational",
-  degraded: "Check failed",
+  degraded: "Degraded",
   partial_outage: "Partial outage",
   major_outage: "Major outage",
   maintenance: "Maintenance",

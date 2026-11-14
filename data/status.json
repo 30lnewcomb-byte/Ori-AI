@@ -3,7 +3,7 @@
   "updatedAt": null,
   "overall": {
     "state": "unknown",
-    "message": "Status monitoring is being set up. Live checks are not connected yet."
+    "message": "Live service checks run whenever this page is opened. No continuous background monitor is configured yet."
   },
   "components": [
     {
@@ -11,28 +11,48 @@
       "name": "Ori-AI website",
       "description": "The public Ori website.",
       "state": "unmonitored",
-      "url": "https://ori-ai-tan.vercel.app"
+      "url": "https://ori-ai-tan.vercel.app",
+      "monitorUrl": "https://ori-ai-tan.vercel.app/"
     },
     {
       "id": "ori-platform",
       "name": "Ori Platform",
-      "description": "The main Ori platform and intelligence services.",
+      "description": "The main Ori Platform web application.",
       "state": "unmonitored",
-      "url": "https://ori-platform.vercel.app"
+      "url": "https://ori-platform.vercel.app",
+      "monitorUrl": "https://ori-platform.vercel.app/"
+    },
+    {
+      "id": "ori-intelligence",
+      "name": "Ori Intelligence runtime",
+      "description": "The Render-hosted TensorFlow intelligence API used by Ori Platform.",
+      "state": "unmonitored",
+      "url": "https://ori-intelligence-migration.onrender.com",
+      "monitorUrl": "https://ori-intelligence-migration.onrender.com/health"
+    },
+    {
+      "id": "ori-vm-runtime",
+      "name": "Ori VM runtime",
+      "description": "The Render-hosted VM service used by Ori Platform.",
+      "state": "unmonitored",
+      "url": "https://ori-vm-runtime.onrender.com",
+      "monitorUrl": "https://ori-vm-runtime.onrender.com/"
     },
     {
       "id": "ori-developer-platform",
       "name": "Ori Developer Platform",
       "description": "The developer workspace and documentation.",
       "state": "unmonitored",
-      "url": "https://ori-developer-platform.vercel.app"
+      "url": "https://ori-developer-platform.vercel.app",
+      "monitorUrl": "https://ori-developer-platform.vercel.app/"
     },
     {
       "id": "ori-mechanic",
       "name": "Ori Mechanic",
-      "description": "Independent engineering project.",
+      "description": "Independent engineering project repository. This check verifies repository availability, not whether Mechanic's unfinished runtime is operational.",
       "state": "unmonitored",
-      "url": "https://github.com/30lnewcomb-byte/ori-mechanic"
+      "url": "https://github.com/30lnewcomb-byte/ori-mechanic",
+      "monitorUrl": "https://api.github.com/repos/30lnewcomb-byte/ori-mechanic"
     }
   ],
   "incidents": []

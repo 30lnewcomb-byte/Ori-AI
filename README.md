@@ -33,7 +33,7 @@ npm start
 - `/technology` — engineering and technology overview
 - `/research` — research and experiments
 - `/developers` — developer platform and documentation links
-- `/company` — about Ori
+- `/company` — about Ori\n- `/status` — service status and incident history
 - `/updates` — announcements and release notes
 
 ## Deployment
@@ -48,3 +48,5 @@ Do not connect this repository to the deployment projects for Ori Platform or Or
 - Clearly distinguish working products from features that are still being developed.
 - Update product links only when the destination is real and verified.
 - Keep the company site focused on the Ori organization; product applications remain in their own repositories and deployments.
+
+\n## Status publishing\n\nThe public status page reads `data/status.json`. See `docs/STATUS-AUTOMATION.md` for the schema and the review-first workflow intended for future Ori Mechanic integration. Statuses must be backed by verified checks; unmonitored services must remain labeled as unmonitored.\n

@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import { status, type ComponentState } from "@/lib/status";
+import { getLiveStatus, status, type ComponentState, type OverallState } from "@/lib/status";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "System status",
-  description: "Current service status and incident updates for Ori projects."
+  description: "Live endpoint checks and incident updates for Ori projects."
 };
 
-const stateLabels: Record<ComponentState | "unknown", string> = {
+const stateLabels: Record<ComponentState | OverallState, string> = {
   operational: "Operational",
-  degraded: "Degraded performance",
+  degraded: "Check failed",
   partial_outage: "Partial outage",
   major_outage: "Major outage",
   maintenance: "Maintenance",
@@ -27,7 +30,8 @@ function formatDate(value: string | null) {
   }).format(date) + " UTC";
 }
 
-export default function StatusPage() {
+export default async function StatusPage() {
+  const live = await getLiveStatus();
   const incidents = [...status.incidents].sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );
@@ -38,32 +42,37 @@ export default function StatusPage() {
         <section className="page-intro" data-reveal>
           <div className="eyebrow"><span className="eyebrow-dot" /> ORI SERVICE STATUS</div>
           <h1>Know what’s working.</h1>
-          <p>A clear view of the services and projects that make up Ori. We’ll publish incidents and maintenance updates here when monitoring is connected.</p>
+          <p>Live checks of the public Ori websites, the connected Render services, and the Ori Mechanic repository. Each check runs when this page is requested.</p>
         </section>
 
-        <section className="status-overview" aria-labelledby="overall-status-title">
+        <section className="status-overview" aria-labelledby="overall-status-title" aria-live="polite">
           <div className="status-overview-main">
-            <span className="section-kicker">CURRENT STATUS</span>
-            <h2 id="overall-status-title">{stateLabels[status.overall.state]}</h2>
-            <p>{status.overall.message}</p>
+            <span className="section-kicker">LATEST CHECK</span>
+            <h2 id="overall-status-title">{stateLabels[live.overallState]}</h2>
+            <p>{live.message}</p>
           </div>
           <div className="status-updated">
-            <span>LAST UPDATED</span>
-            <strong>{formatDate(status.updatedAt)}</strong>
+            <span>LAST CHECKED</span>
+            <strong>{formatDate(live.checkedAt)}</strong>
+            <a href="/status">Run checks again ↗</a>
           </div>
         </section>
 
         <section className="status-components" aria-labelledby="components-title">
           <div className="status-section-heading">
-            <div><span className="section-kicker">SERVICE COMPONENTS</span><h2 id="components-title">Ori services</h2></div>
-            <span className="status-count">{status.components.length} components</span>
+            <div><span className="section-kicker">LIVE ENDPOINT CHECKS</span><h2 id="components-title">Ori services</h2></div>
+            <span className="status-count">{live.components.length} monitored endpoints</span>
           </div>
           <div className="status-component-list">
-            {status.components.map((component) => (
+            {live.components.map((component) => (
               <article className="status-component" key={component.id}>
                 <div className="status-component-copy">
                   <h3>{component.name}</h3>
                   <p>{component.description}</p>
+                  <small className="status-check-detail">
+                    {component.checkMessage}
+                    {component.responseTimeMs !== null ? ` · ${component.responseTimeMs} ms` : ""}
+                  </small>
                 </div>
                 <div className="status-component-state">
                   <span className={`status-indicator status-indicator-${component.state}`} aria-hidden="true" />
@@ -101,7 +110,7 @@ export default function StatusPage() {
           )}
         </section>
 
-        <p className="status-footnote">Status information is published from Ori’s service-status data. Unmonitored services are not being checked automatically; their availability should not be inferred from this page.</p>
+        <p className="status-footnote">Monitoring is request-triggered: opening or refreshing this page runs a fresh check. It is not yet a continuous background monitor and does not retain historical uptime measurements. A failed check can be caused by a Render cold start or temporary network issue; a single failure is not automatically declared a confirmed outage. Ori Mechanic’s check verifies that its GitHub repository is reachable, not that its unfinished runtime is operational.</p>
       </div>
     </main>
   );

@@ -113,9 +113,24 @@ export async function checkStatusComponent(
     if (response.ok && (component.id === "render-platform" || component.id === "vercel-platform")) {
       const payload = await response.json() as {
         status?: { indicator?: string; description?: string };
+        incidents?: Array<{ name?: string; status?: string; impact?: string }>;
+        scheduled_maintenances?: Array<{ name?: string; status?: string }>;
       };
       const indicator = payload.status?.indicator ?? "unknown";
       const description = payload.status?.description ?? "Provider did not include a status description.";
+      const activeIncidents = (payload.incidents ?? [])
+        .filter((incident) => incident.status !== "resolved" && incident.name)
+        .slice(0, 2)
+        .map((incident) => incident.name as string);
+      const activeMaintenance = (payload.scheduled_maintenances ?? [])
+        .filter((item) => item.status !== "completed" && item.name)
+        .slice(0, 2)
+        .map((item) => item.name as string);
+      const detailParts = [
+        `Provider status: ${description} (indicator: ${indicator}).`,
+        activeIncidents.length ? `Active incidents: ${activeIncidents.join("; ")}.` : "",
+        activeMaintenance.length ? `Scheduled maintenance: ${activeMaintenance.join("; ")}.` : ""
+      ].filter(Boolean);
       const providerState: Exclude<ComponentState, "unmonitored"> =
         indicator === "none" ? "operational" :
         indicator === "maintenance" ? "maintenance" :
@@ -129,7 +144,7 @@ export async function checkStatusComponent(
         state: providerState,
         checkedAt,
         responseTimeMs,
-        checkMessage: `Provider status: ${description} (indicator: ${indicator}).`
+        checkMessage: detailParts.join(" ")
       };
     }
     if (response.ok) {
@@ -168,11 +183,18 @@ export async function getLiveStatus() {
   const components = await Promise.all(
     status.components.map((component) => checkStatusComponent(component, checkedAt))
   );
-  const degradedCount = components.filter((component) => component.state !== "operational").length;
-  const overallState: OverallState = degradedCount === 0 ? "operational" : "degraded";
-  const message = degradedCount === 0
-    ? "All monitored endpoints responded successfully during the latest check."
-    : `${degradedCount} of ${components.length} monitored endpoints did not respond successfully. This may include a cold start or a temporary network issue; check again before treating it as an outage.`;
+  const attention = components.filter((component) => component.state !== "operational");
+  const hasMajorOutage = attention.some((component) => component.state === "major_outage");
+  const hasPartialOutage = attention.some((component) => component.state === "partial_outage");
+  const hasMaintenance = attention.some((component) => component.state === "maintenance");
+  const hasDegraded = attention.some((component) => component.state === "degraded");
+  const overallState: OverallState = hasMajorOutage ? "major_outage" :
+    hasPartialOutage ? "partial_outage" :
+    hasDegraded ? "degraded" :
+    hasMaintenance ? "maintenance" : "operational";
+  const message = attention.length === 0
+    ? "All monitored Ori endpoints and provider status feeds report operational."
+    : `${attention.length} of ${components.length} monitored checks need attention. Review the individual results below; an endpoint check failure is not automatically a confirmed provider outage.`;
 
   return { components, checkedAt, overallState, message };
 }

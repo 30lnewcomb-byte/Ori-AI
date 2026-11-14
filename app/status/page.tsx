@@ -32,6 +32,8 @@ function formatDate(value: string | null) {
 
 export default async function StatusPage() {
   const live = await getLiveStatus();
+  const oriComponents = live.components.filter((component) => !["render-platform", "vercel-platform"].includes(component.id));
+  const providerComponents = live.components.filter((component) => ["render-platform", "vercel-platform"].includes(component.id));
   const incidents = [...status.incidents].sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );
@@ -61,10 +63,10 @@ export default async function StatusPage() {
         <section className="status-components" aria-labelledby="components-title">
           <div className="status-section-heading">
             <div><span className="section-kicker">LIVE ENDPOINT CHECKS</span><h2 id="components-title">Ori services</h2></div>
-            <span className="status-count">{live.components.length} monitored endpoints</span>
+            <span className="status-count">{oriComponents.length} checks</span>
           </div>
           <div className="status-component-list">
-            {live.components.map((component) => (
+            {oriComponents.map((component) => (
               <article className="status-component" key={component.id}>
                 <div className="status-component-copy">
                   <h3>{component.name}</h3>
@@ -79,6 +81,32 @@ export default async function StatusPage() {
                   <span>{stateLabels[component.state]}</span>
                 </div>
                 {component.url ? <a href={component.url} target="_blank" rel="noreferrer" aria-label={`Open ${component.name}`}>↗</a> : null}
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="status-components status-provider-components" aria-labelledby="providers-title">
+          <div className="status-section-heading">
+            <div><span className="section-kicker">HOSTING & INFRASTRUCTURE</span><h2 id="providers-title">Platform providers</h2></div>
+            <span className="status-count">{providerComponents.length} provider feeds</span>
+          </div>
+          <div className="status-component-list">
+            {providerComponents.map((component) => (
+              <article className="status-component" key={component.id}>
+                <div className="status-component-copy">
+                  <h3>{component.name}</h3>
+                  <p>{component.description}</p>
+                  <small className="status-check-detail">
+                    {component.checkMessage}
+                    {component.responseTimeMs !== null ? ` · ${component.responseTimeMs} ms` : ""}
+                  </small>
+                </div>
+                <div className="status-component-state">
+                  <span className={`status-indicator status-indicator-${component.state}`} aria-hidden="true" />
+                  <span>{stateLabels[component.state]}</span>
+                </div>
+                {component.url ? <a href={component.url} target="_blank" rel="noreferrer" aria-label={`Open official ${component.name} status page`}>↗</a> : null}
               </article>
             ))}
           </div>
@@ -110,7 +138,7 @@ export default async function StatusPage() {
           )}
         </section>
 
-        <p className="status-footnote">Monitoring is request-triggered: opening or refreshing this page runs a fresh check. It is not yet a continuous background monitor and does not retain historical uptime measurements. A failed check can be caused by a Render cold start or temporary network issue; a single failure is not automatically declared a confirmed outage. Ori Mechanic’s check verifies that its GitHub repository is reachable, not that its unfinished runtime is operational.</p>
+        <p className="status-footnote">Checks run when this page is opened or refreshed; they are not yet continuous background monitoring and no historical uptime is stored. Provider status comes from Render’s and Vercel’s published status feeds. Ori service checks test public endpoints, so a failed endpoint check can be caused by a cold start or network issue and is not automatically a confirmed provider outage. Ori Mechanic’s check verifies repository availability only, not runtime readiness.</p>
       </div>
     </main>
   );

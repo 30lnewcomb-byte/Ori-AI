@@ -42,7 +42,7 @@ export default async function StatusPage() {
         <section className="page-intro" data-reveal>
           <div className="eyebrow"><span className="eyebrow-dot" /> ORI SERVICE STATUS</div>
           <h1>Know what’s working.</h1>
-          <p>Live checks of the public Ori websites, the connected Render services, and the Ori Mechanic repository. Each check runs when this page is requested.</p>
+          <p>Live checks of Ori websites and runtimes, plus Render and Vercel platform health. Provider checks read each platform’s published status feed; each check runs when this page is requested.</p>
         </section>
 
         <section className="status-overview" aria-labelledby="overall-status-title" aria-live="polite">

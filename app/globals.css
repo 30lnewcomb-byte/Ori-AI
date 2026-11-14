@@ -58,7 +58,7 @@ button{font:inherit}
 .intro-band h2,.principles-inner h2,.section-heading h2,.closing-cta h2,.page-next h2,.company-links h2{font-family:Manrope,sans-serif;font-size:clamp(34px,4vw,49px);line-height:1.13;letter-spacing:-.055em;font-weight:600;margin:0}
 .intro-band-content>p{color:var(--muted);font-size:15px;line-height:1.9;max-width:430px;margin:0 0 5px}
 .products-section{padding-top:20px;padding-bottom:115px}
-.section-heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:36px}
+.section-heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px}
 .section-heading .section-kicker{margin:0 0 16px}
 .text-link{display:inline-flex;align-items:center;gap:10px;color:#c5d9f4;font-size:12px;font-weight:600;border-bottom:1px solid #536c8b;padding-bottom:7px}
 .text-link span{color:var(--blue)}

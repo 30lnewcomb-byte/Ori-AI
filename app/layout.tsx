@@ -6,6 +6,8 @@ import { SiteFooter } from "@/components/site-footer";
 import { Analytics } from "@vercel/analytics/react";
 import { MotionEnhancer } from "@/components/motion-enhancer";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: {
     default: "Ori — One idea. Many projects.",

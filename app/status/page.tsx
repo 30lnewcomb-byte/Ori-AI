@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getLiveStatus, status, type ComponentState, type OverallState } from "@/lib/status";
+import { getLiveStatus, status, type ComponentState, type OverallState, type StatusComponent } from "@/lib/status";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -32,8 +32,8 @@ function formatDate(value: string | null) {
 
 export default async function StatusPage() {
   const live = await getLiveStatus();
-  const oriComponents = live.components.filter((component: (typeof live.components)[number]) => !["render-platform", "vercel-platform"].includes(component.id));
-  const providerComponents = live.components.filter((component: (typeof live.components)[number]) => ["render-platform", "vercel-platform"].includes(component.id));
+  const oriComponents = live.components.filter((component: StatusComponent) => !["render-platform", "vercel-platform"].includes(component.id));
+  const providerComponents = live.components.filter((component: StatusComponent) => ["render-platform", "vercel-platform"].includes(component.id));
   const incidents = [...status.incidents].sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );

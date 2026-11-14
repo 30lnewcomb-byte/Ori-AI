@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { MotionEnhancer } from "@/components/motion-enhancer";
 
 export const metadata: Metadata = {
   title: {
-    default: "Ori — Thoughtful technology, built to be useful",
+    default: "Ori — One idea. Many projects.",
     template: "%s — Ori"
   },
-  description:
-    "Explore Ori, an independent technology project building AI tools, developer experiences, and practical software.",
+  description: "Ori is a personal technology project that grew from one question into AI systems, local experiments, developer tools, and independent software projects.",
   icons: { icon: "/ori-mark.svg" },
   openGraph: {
-    title: "Ori",
-    description: "Thoughtful technology, built to be useful.",
+    title: "Ori — One idea. Many projects.",
+    description: "A personal technology project, built through curiosity and experimentation.",
     siteName: "Ori",
     type: "website"
   },
@@ -26,6 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <a className="skip-link" href="#main">Skip to content</a>
         <SiteHeader />
+        <MotionEnhancer />
         {children}
         <SiteFooter />
       </body>

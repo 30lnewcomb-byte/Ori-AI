@@ -1,26 +1,36 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PageIntro } from "@/components/page-intro";
 
-export const metadata: Metadata = { title: "Products", description: "Explore the products and engineering projects being built under Ori." };
+export const metadata: Metadata = {
+  title: "Projects",
+  description: "Explore the separate projects that make up the Ori ecosystem."
+};
 
 const items = [
-  { name: "Ori Platform", category: "AI experience", state: "Product", description: "Ori's user-facing AI workspace. It is the home for conversations and the intelligence services connected to the platform.", href: "https://ori-platform.vercel.app", action: "Open platform" },
-  { name: "Ori Developer Platform", category: "Developer experience", state: "In development", description: "A dedicated technical workspace for projects, API access, models, tools, and platform configuration. Some areas are still being built.", href: "https://ori-developer-platform.vercel.app", action: "Visit developer platform" },
-  { name: "Ori Mechanic", category: "Engineering project", state: "Open source repository", description: "An independent engineering project focused on safely coordinating technical work through isolated capabilities and explicit permissions.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", action: "View source on GitHub" }
+  { name: "Ori Platform", category: "AI platform", state: "Active project", description: "The main Ori experience and the platform work connecting its AI capabilities to an application.", href: "https://ori-platform.vercel.app", action: "Open platform" },
+  { name: "Ori Developer Platform", category: "Developer workspace", state: "In development", description: "A separate workspace for projects, models, tools, documentation, and platform configuration. Its capabilities continue to develop.", href: "https://ori-developer-platform.vercel.app", action: "Visit developer platform" },
+  { name: "Ori Mechanic", category: "Independent engineering", state: "In development", description: "An independent engineering project exploring controlled technical workflows, isolated capabilities, and explicit permissions.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", action: "View project on GitHub" }
 ];
 
 export default function ProductsPage() {
-  return <main id="main" className="subpage">
-    <div className="section-wrap">
-      <PageIntro eyebrow="THE ORI ECOSYSTEM" title="Tools for different kinds of work." description="Ori is a collection of connected projects. Each one has a clear purpose, its own experience, and room to grow." />
-      <div className="catalog-list">
-        {items.map((item, i) => <article className="catalog-item" key={item.name}>
-          <div className="catalog-index">0{i + 1}</div>
-          <div className="catalog-main"><div className="catalog-meta"><span>{item.category}</span><span className="catalog-state">{item.state}</span></div><h2>{item.name}</h2><p>{item.description}</p><a className="text-link" href={item.href} target="_blank" rel="noreferrer">{item.action} <span aria-hidden="true">↗</span></a></div>
-        </article>)}
+  return (
+    <main id="main" className="subpage">
+      <div className="section-wrap">
+        <PageIntro eyebrow="THE ORI ECOSYSTEM" title="Different projects. A shared starting point." description="Ori grew from one idea into several projects. Each has its own purpose and pace, while contributing to the wider ecosystem." />
+        <div className="catalog-list">
+          {items.map((item, i) => (
+            <article className="catalog-item" key={item.name} data-reveal data-delay={i * 70}>
+              <div className="catalog-index">0{i + 1}</div>
+              <div className="catalog-main">
+                <div className="catalog-meta"><span>{item.category}</span><span className="catalog-state">{item.state}</span></div>
+                <h2>{item.name}</h2><p>{item.description}</p>
+                <a className="text-link" href={item.href} target="_blank" rel="noreferrer">{item.action} <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="note-panel" data-reveal><span className="note-symbol">i</span><p>These projects are not all at the same stage. Active work, public destinations, and features still being developed are described separately.</p></div>
       </div>
-      <div className="note-panel"><span className="note-symbol">i</span><p>Ori is an actively developing independent project. Product availability and capabilities vary; this site distinguishes working destinations from work that is still in progress.</p></div>
-    </div>
-  </main>;
+    </main>
+  );
 }

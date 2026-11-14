@@ -7,7 +7,7 @@ export function PageIntro({ eyebrow, title, description, children }: {
   children?: ReactNode;
 }) {
   return (
-    <section className="page-intro">
+    <section className="page-intro" data-reveal>
       <div className="eyebrow"><span className="eyebrow-dot" />{eyebrow}</div>
       <h1>{title}</h1>
       <p>{description}</p>

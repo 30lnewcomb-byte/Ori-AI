@@ -71,4 +71,4 @@ if (!isStatusDocument(rawStatus)) {
   throw new Error("Invalid data/status.json. See docs/STATUS-AUTOMATION.md for the schema.");
 }
 
-export const status = rawStatus;
+export const status: StatusDocument = rawStatus as StatusDocument;

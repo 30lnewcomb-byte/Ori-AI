@@ -118,11 +118,31 @@ export async function checkStatusComponent(
       };
       const indicator = payload.status?.indicator ?? "unknown";
       const description = payload.status?.description ?? "Provider did not include a status description.";
-      const activeIncidents = (payload.incidents ?? [])
+      const feedBase = component.monitorUrl.replace(/\/status\.json$/, "");
+      const [incidentResponse, maintenanceResponse] = await Promise.all([
+        fetch(`${feedBase}/incidents/unresolved.json`, {
+          cache: "no-store",
+          signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
+          headers: { Accept: "application/json" }
+        }).catch(() => null),
+        fetch(`${feedBase}/scheduled-maintenances/active.json`, {
+          cache: "no-store",
+          signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
+          headers: { Accept: "application/json" }
+        }).catch(() => null)
+      ]);
+      const [incidentPayload, maintenancePayload] = await Promise.all([
+        incidentResponse?.ok ? incidentResponse.json().catch(() => null) : null,
+        maintenanceResponse?.ok ? maintenanceResponse.json().catch(() => null) : null
+      ]) as [
+        { incidents?: Array<{ name?: string; status?: string }> } | null,
+        { scheduled_maintenances?: Array<{ name?: string; status?: string }> } | null
+      ];
+      const activeIncidents = (incidentPayload?.incidents ?? [])
         .filter((incident) => incident.status !== "resolved" && incident.name)
         .slice(0, 2)
         .map((incident) => incident.name as string);
-      const activeMaintenance = (payload.scheduled_maintenances ?? [])
+      const activeMaintenance = (maintenancePayload?.scheduled_maintenances ?? [])
         .filter((item) => item.status !== "completed" && item.name)
         .slice(0, 2)
         .map((item) => item.name as string);

@@ -10,8 +10,8 @@ Current checks:
 
 - Ori-AI website: public homepage response.
 - Ori Platform: public application homepage response.
-- Ori Intelligence: the production Render runtime's `/health` endpoint.
-- Ori VM runtime: the Render-hosted VM service root endpoint.
+- Ori Intelligence: a private health endpoint configured through the `ORI_INTELLIGENCE_HEALTH_URL` Vercel environment variable.
+- Ori VM runtime: a private health endpoint configured through the `ORI_VM_RUNTIME_HEALTH_URL` Vercel environment variable.
 - Ori Developer Platform: public application homepage response.
 - Ori Mechanic: GitHub repository API response. This verifies repository availability only; it does not claim that Mechanic's runtime is ready.
 - Render platform: Render's public Statuspage JSON feed. The monitor reads the provider's status indicator and description, not just the HTTP response.
@@ -33,7 +33,7 @@ Ori Mechanic's future status-management tool should use an authenticated, scoped
 
 ## Data schema
 
-The checked component inventory and incident history are kept in `data/status.json`. Each component has a stable `id`, public `name`, `description`, optional public `url`, and optional `monitorUrl`. Do not put secrets or private service URLs in this file.
+The checked component inventory and incident history are kept in `data/status.json`. Each component has a stable `id`, public `name`, and `description`. Public-facing links may use `url`; private monitor destinations must be configured only in server-side environment variables (`ORI_INTELLIGENCE_HEALTH_URL` and `ORI_VM_RUNTIME_HEALTH_URL`). Never store private runtime URLs in `data/status.json` or expose them in page markup.
 
 Incident records use stable IDs, a title, state (`investigating`, `identified`, `monitoring`, or `resolved`), impact, timestamps, and concise public-safe update messages.
 

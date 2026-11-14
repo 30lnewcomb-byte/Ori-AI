@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import rawStatus from "@/data/status.json";
 
 export type ComponentState =
@@ -109,8 +108,7 @@ export async function checkStatusComponent(
   try {
     const response = await fetch(monitorUrl, {
       method: "GET",
-      cache: "no-store",
-      redirect: "follow",
+            redirect: "follow",
       signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
       headers: component.id === "ori-mechanic"
         ? { Accept: "application/vnd.github+json", "User-Agent": "Ori-Status-Monitor" }
@@ -128,13 +126,11 @@ export async function checkStatusComponent(
       const feedBase = monitorUrl.replace(/\/status\.json$/, "");
       const [incidentResponse, maintenanceResponse] = await Promise.all([
         fetch(`${feedBase}/incidents/unresolved.json`, {
-          cache: "no-store",
-          signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
+                    signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
           headers: { Accept: "application/json" }
         }).catch(() => null),
         fetch(`${feedBase}/scheduled-maintenances/active.json`, {
-          cache: "no-store",
-          signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
+                    signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
           headers: { Accept: "application/json" }
         }).catch(() => null)
       ]);

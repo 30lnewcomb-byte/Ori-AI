@@ -23,6 +23,8 @@ Each check has a 12-second timeout and uses a no-cache request. Provider feeds m
 
 This is request-triggered monitoring: checks run when someone opens or refreshes the status page. It is not a continuous background monitor, does not run on a fixed schedule, and does not store historical uptime measurements. The page displays the time of the latest check and response time for each endpoint.
 
+The page separates Ori service checks from hosting-provider checks so a provider incident is not confused with an Ori application failure. It reads active incident and scheduled-maintenance names from the provider feed when present.
+
 A future scheduled monitor can write check history to a persistent store and provide alerts. That should be added only after a durable storage backend is selected. Do not claim continuous uptime coverage until that exists.
 
 ## Ori Mechanic integration

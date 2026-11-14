@@ -1,64 +1,42 @@
-# Ori status publishing
+# Ori status monitoring and publishing
 
-This document defines the machine-readable status source for the public page at `/status`.
+The public status page is served at `https://ori-ai-tan.vercel.app/status`.
 
-## Source of truth
+## Built-in checks
 
-- File: `data/status.json`
-- Public page: `https://ori-ai-tan.vercel.app/status`
-- The page reads this file at build time. A production deployment publishes accepted changes.
-- Keep the page presentation separate from status data. Do not hard-code service states into the React page.
+The status page performs server-side endpoint checks whenever the page is requested. It does not depend on Ori Mechanic, GitHub commits, or a third-party monitoring vendor.
+
+Current checks:
+
+- Ori-AI website: public homepage response.
+- Ori Platform: public application homepage response.
+- Ori Intelligence: the production Render runtime's `/health` endpoint.
+- Ori VM runtime: the Render-hosted VM service root endpoint.
+- Ori Developer Platform: public application homepage response.
+- Ori Mechanic: GitHub repository API response. This verifies repository availability only; it does not claim that Mechanic's runtime is ready.
+
+Each check has a 12-second timeout and uses a no-cache request. A successful HTTP response is shown as operational. An unsuccessful response or timeout is shown as a failed check/degraded state. A single failed check is not automatically treated as a confirmed major outage because Render free services can take time to wake from a cold start.
+
+## Monitoring limitations
+
+This is request-triggered monitoring: checks run when someone opens or refreshes the status page. It is not a continuous background monitor, does not run on a fixed schedule, and does not store historical uptime measurements. The page displays the time of the latest check and response time for each endpoint.
+
+A future scheduled monitor can write check history to a persistent store and provide alerts. That should be added only after a durable storage backend is selected. Do not claim continuous uptime coverage until that exists.
 
 ## Ori Mechanic integration
 
-Ori Mechanic may prepare status changes by editing `data/status.json` in a dedicated branch and opening a pull request. Do not give an automation direct permission to publish to the production branch by default.
+Ori Mechanic's future status-management tool should use an authenticated, scoped API rather than Git commits. The API should validate requests, enforce per-component permissions, rate-limit writes, and maintain an audit trail. Incident creation and updates should be filtered by policy before publication. The live endpoint checks remain independent from Mechanic so the status page continues working while Mechanic is under development.
 
-Required workflow:
+## Data schema
 
-1. Read current status data and preserve unrelated components and incident history.
-2. Verify a state using an actual health check or an explicitly supplied operator update. A failed check should be repeated before reporting an outage.
-3. Set `updatedAt` to an ISO 8601 UTC timestamp when changing published data.
-4. Validate the complete document against the schema below.
-5. Open a pull request with the evidence, check time, affected component IDs, and concise change summary.
-6. A human maintainer reviews and merges the change. Only then does the production page update.
+The checked component inventory and incident history are kept in `data/status.json`. Each component has a stable `id`, public `name`, `description`, optional public `url`, and optional `monitorUrl`. Do not put secrets or private service URLs in this file.
 
-Never infer that a service is operational merely because a URL exists or a deployment was once successful. If a component has no reliable monitor, keep its state as `unmonitored`. If the overall state cannot be established, use `unknown`.
-
-## Data schema (version 1)
-
-Top-level fields:
-
-- `schemaVersion`: must be `1`.
-- `updatedAt`: ISO 8601 UTC timestamp, or `null` before the first verified update.
-- `overall`: `{ "state": OverallState, "message": string }`.
-- `components`: array of service components.
-- `incidents`: array of incident records, newest updates first on the page.
-
-Component fields:
-
-- `id`: stable lowercase identifier. Do not rename existing IDs.
-- `name`: public service name.
-- `description`: short factual description.
-- `state`: one of `operational`, `degraded`, `partial_outage`, `major_outage`, `maintenance`, `unmonitored`.
-- `url`: optional public destination.
-
-Overall state accepts the component states plus `unknown`.
-
-Incident fields:
-
-- `id`: stable unique identifier.
-- `title`: concise public title.
-- `state`: `investigating`, `identified`, `monitoring`, or `resolved`.
-- `impact`: `none`, `minor`, `major`, or `critical`.
-- `startedAt` and `updatedAt`: ISO 8601 UTC timestamps.
-- `updates`: chronological entries with `at` (ISO 8601 UTC) and `message` (factual, customer-safe summary).
+Incident records use stable IDs, a title, state (`investigating`, `identified`, `monitoring`, or `resolved`), impact, timestamps, and concise public-safe update messages.
 
 ## Publishing and safety rules
 
 - Status data is public. Never include secrets, credentials, internal IP addresses, private logs, personal information, or security-sensitive implementation details.
-- Do not invent uptime percentages, response times, maintenance windows, incident causes, or resolution estimates.
+- Do not invent uptime percentages, response times, incident causes, or resolution estimates.
 - Do not create an incident for an unverified alert.
 - Keep incident messages factual, brief, and understandable.
 - Preserve the existing status schema unless a maintainer approves a versioned migration.
-- A pull request is a proposal, not a published status change.
-- Do not add a direct write endpoint to the public website. Any future authenticated automation must use scoped credentials, schema validation, audit logs, rate limits, and human approval before publication.

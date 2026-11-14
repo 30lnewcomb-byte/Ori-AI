@@ -110,6 +110,28 @@ export async function checkStatusComponent(
         : { Accept: "application/json,text/html,*/*" }
     });
     const responseTimeMs = Date.now() - started;
+    if (response.ok && (component.id === "render-platform" || component.id === "vercel-platform")) {
+      const payload = await response.json() as {
+        status?: { indicator?: string; description?: string };
+      };
+      const indicator = payload.status?.indicator ?? "unknown";
+      const description = payload.status?.description ?? "Provider did not include a status description.";
+      const providerState: Exclude<ComponentState, "unmonitored"> =
+        indicator === "none" ? "operational" :
+        indicator === "maintenance" ? "maintenance" :
+        indicator === "minor" ? "degraded" :
+        indicator === "major" ? "major_outage" :
+        indicator === "critical" ? "major_outage" :
+        indicator === "unknown" ? "degraded" : "degraded";
+
+      return {
+        ...component,
+        state: providerState,
+        checkedAt,
+        responseTimeMs,
+        checkMessage: `Provider status: ${description} (indicator: ${indicator}).`
+      };
+    }
     if (response.ok) {
       return {
         ...component,

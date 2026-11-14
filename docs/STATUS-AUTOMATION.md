@@ -14,8 +14,10 @@ Current checks:
 - Ori VM runtime: the Render-hosted VM service root endpoint.
 - Ori Developer Platform: public application homepage response.
 - Ori Mechanic: GitHub repository API response. This verifies repository availability only; it does not claim that Mechanic's runtime is ready.
+- Render platform: Render's public Statuspage JSON feed. The monitor reads the provider's status indicator and description, not just the HTTP response.
+- Vercel platform: Vercel's public Statuspage JSON feed. The monitor reads the provider's status indicator and description, not just the HTTP response.
 
-Each check has a 12-second timeout and uses a no-cache request. A successful HTTP response is shown as operational. An unsuccessful response or timeout is shown as a failed check/degraded state. A single failed check is not automatically treated as a confirmed major outage because Render free services can take time to wake from a cold start.
+Each check has a 12-second timeout and uses a no-cache request. Provider feeds map their published indicators to Ori status states: `none` is operational, `maintenance` is maintenance, `minor` is degraded, and `major`/`critical` are major outages. Unknown provider indicators are treated as degraded rather than falsely shown as operational. A successful HTTP response is shown as operational. An unsuccessful response or timeout is shown as a failed check/degraded state. A single failed check is not automatically treated as a confirmed major outage because Render free services can take time to wake from a cold start.
 
 ## Monitoring limitations
 

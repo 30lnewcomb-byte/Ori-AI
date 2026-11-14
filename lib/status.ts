@@ -16,7 +16,6 @@ export type StatusComponent = {
   description: string;
   state: ComponentState;
   url?: string;
-  monitorUrl?: string;
 };
 
 export type StatusIncident = {
@@ -64,7 +63,6 @@ function isStatusDocument(value: unknown): value is StatusDocument {
       typeof component.state === "string" &&
       allowedStates.has(component.state as ComponentState) &&
       (component.url === undefined || typeof component.url === "string") &&
-      (component.monitorUrl === undefined || typeof component.monitorUrl === "string")
     );
   });
 }
@@ -84,11 +82,19 @@ export type LiveStatusComponent = StatusComponent & {
 
 const CHECK_TIMEOUT_MS = 12000;
 
+// Private runtime URLs live only in server-side environment variables.
+function getMonitorUrl(component: StatusComponent): string | undefined {
+  if (component.id === "ori-intelligence") return process.env.ORI_INTELLIGENCE_HEALTH_URL;
+  if (component.id === "ori-vm-runtime") return process.env.ORI_VM_RUNTIME_HEALTH_URL;
+  return component.url;
+}
+
 export async function checkStatusComponent(
   component: StatusComponent,
   checkedAt: string
 ): Promise<LiveStatusComponent> {
-  if (!component.monitorUrl) {
+  const monitorUrl = getMonitorUrl(component);
+  if (!monitorUrl) {
     return {
       ...component,
       state: "degraded",
@@ -100,7 +106,7 @@ export async function checkStatusComponent(
 
   const started = Date.now();
   try {
-    const response = await fetch(component.monitorUrl, {
+    const response = await fetch(monitorUrl, {
       method: "GET",
       cache: "no-store",
       redirect: "follow",
@@ -118,7 +124,7 @@ export async function checkStatusComponent(
       };
       const indicator = payload.status?.indicator ?? "unknown";
       const description = payload.status?.description ?? "Provider did not include a status description.";
-      const feedBase = component.monitorUrl.replace(/\/status\.json$/, "");
+      const feedBase = monitorUrl.replace(/\/status\.json$/, "");
       const [incidentResponse, maintenanceResponse] = await Promise.all([
         fetch(`${feedBase}/incidents/unresolved.json`, {
           cache: "no-store",

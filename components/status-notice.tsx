@@ -1,7 +1,7 @@
-import { getLiveStatus } from "@/lib/status";
+import { getLiveStatus, type LiveStatusSnapshot } from "@/lib/status";
 
 export async function StatusNotice() {
-  const live = await getLiveStatus();
+  const live = (await getLiveStatus()) as LiveStatusSnapshot;
   const affected = live.components.filter((component) => component.state !== "operational");
   if (affected.length === 0) return null;
 

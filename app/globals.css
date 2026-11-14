@@ -391,3 +391,16 @@ a:focus-visible,button:focus-visible{outline:2px solid #8bb9ff;outline-offset:4p
   .hero-editorial .hero-content,.hero-editorial .hero-index{animation:none}
   .hero-index-row,.button,.row-link,.text-link,.menu-toggle{transition:none}
 }
+
+
+/* Mobile navigation motion */
+.menu-toggle span{transition:transform .2s ease,opacity .2s ease}
+.menu-toggle[aria-expanded="true"] span:first-child{transform:translateY(3px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span:last-child{transform:translateY(-3px) rotate(-45deg)}
+@media(max-width:700px){
+  .primary-nav{display:flex;visibility:hidden;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .2s ease,transform .2s ease,visibility .2s ease}
+  .primary-nav.is-open{visibility:visible;opacity:1;transform:translateY(0);pointer-events:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  .menu-toggle span,.primary-nav{transition:none;transform:none}
+}

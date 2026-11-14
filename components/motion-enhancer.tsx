@@ -7,7 +7,17 @@ export function MotionEnhancer() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const selector = [
+      "[data-reveal]",
+      ".company-story",
+      ".story-section",
+      ".story-values",
+      ".personal-project",
+      ".about-ending",
+      ".company-links",
+      ".updates-empty"
+    ].join(", ");
+    const targets = document.querySelectorAll<HTMLElement>(selector);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reducedMotion || !("IntersectionObserver" in window)) {

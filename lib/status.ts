@@ -80,6 +80,13 @@ export type LiveStatusComponent = StatusComponent & {
   checkMessage: string;
 };
 
+export type LiveStatusSnapshot = {
+  components: LiveStatusComponent[];
+  checkedAt: string;
+  overallState: OverallState;
+  message: string;
+};
+
 const CHECK_TIMEOUT_MS = 12000;
 
 // Private runtime URLs live only in server-side environment variables.

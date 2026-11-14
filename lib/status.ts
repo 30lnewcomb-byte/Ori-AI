@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import rawStatus from "@/data/status.json";
 
 export type ComponentState =
@@ -141,7 +142,7 @@ export async function checkStatusComponent(
         incidentResponse?.ok ? incidentResponse.json().catch(() => null) : null,
         maintenanceResponse?.ok ? maintenanceResponse.json().catch(() => null) : null
       ]) as [
-        { incidents?: Array<{ name?: string; status?: string }> } | null,
+        { incidents?: Array<{ name?: string; status?: string; impact?: string }> } | null,
         { scheduled_maintenances?: Array<{ name?: string; status?: string }> } | null
       ];
       const activeIncidents = (incidentPayload?.incidents ?? [])
@@ -157,13 +158,20 @@ export async function checkStatusComponent(
         activeIncidents.length ? `Active incidents: ${activeIncidents.join("; ")}.` : "",
         activeMaintenance.length ? `Scheduled maintenance: ${activeMaintenance.join("; ")}.` : ""
       ].filter(Boolean);
+      const activeIncidentImpact = (incidentPayload?.incidents ?? [])
+        .filter((incident) => incident.status !== "resolved")
+        .reduce<"none" | "minor" | "major" | "critical">((highest, incident) => {
+          const impact = incident.impact;
+          const rank = { none: 0, minor: 1, major: 2, critical: 3 };
+          return impact && rank[impact as keyof typeof rank] > rank[highest]
+            ? impact as "none" | "minor" | "major" | "critical"
+            : highest;
+        }, "none");
       const providerState: Exclude<ComponentState, "unmonitored"> =
-        indicator === "none" ? "operational" :
-        indicator === "maintenance" ? "maintenance" :
-        indicator === "minor" ? "degraded" :
-        indicator === "major" ? "major_outage" :
-        indicator === "critical" ? "major_outage" :
-        indicator === "unknown" ? "degraded" : "degraded";
+        indicator === "critical" || indicator === "major" || activeIncidentImpact === "critical" || activeIncidentImpact === "major" ? "major_outage" :
+        indicator === "maintenance" || activeMaintenance.length > 0 ? "maintenance" :
+        indicator === "minor" || activeIncidentImpact === "minor" ? "degraded" :
+        indicator === "none" ? "operational" : "degraded";
 
       return {
         ...component,
@@ -204,7 +212,7 @@ export async function checkStatusComponent(
   }
 }
 
-export async function getLiveStatus() {
+const computeLiveStatus = async () => {
   const checkedAt = new Date().toISOString();
   const components = await Promise.all(
     status.components.map((component) => checkStatusComponent(component, checkedAt))
@@ -223,4 +231,10 @@ export async function getLiveStatus() {
     : `${attention.length} of ${components.length} monitored checks need attention. Review the individual results below; an endpoint check failure is not automatically a confirmed provider outage.`;
 
   return { components, checkedAt, overallState, message };
-}
+};
+
+export const getLiveStatus = unstable_cache(
+  computeLiveStatus,
+  ["ori-live-status-v2"],
+  { revalidate: 60, tags: ["ori-live-status"] }
+);

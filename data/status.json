@@ -25,18 +25,14 @@
     {
       "id": "ori-intelligence",
       "name": "Ori Intelligence runtime",
-      "description": "The Render-hosted TensorFlow intelligence API used by Ori Platform.",
-      "state": "unmonitored",
-      "url": "https://ori-intelligence-migration.onrender.com",
-      "monitorUrl": "https://ori-intelligence-migration.onrender.com/health"
+      "description": "The intelligence API used by Ori Platform.",
+      "state": "unmonitored"
     },
     {
       "id": "ori-vm-runtime",
       "name": "Ori VM runtime",
-      "description": "The Render-hosted VM service used by Ori Platform.",
-      "state": "unmonitored",
-      "url": "https://ori-vm-runtime.onrender.com",
-      "monitorUrl": "https://ori-vm-runtime.onrender.com/"
+      "description": "The VM service used by Ori Platform.",
+      "state": "unmonitored"
     },
     {
       "id": "ori-developer-platform",

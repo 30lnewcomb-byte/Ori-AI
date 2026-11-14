@@ -53,6 +53,22 @@
       "state": "unmonitored",
       "url": "https://github.com/30lnewcomb-byte/ori-mechanic",
       "monitorUrl": "https://api.github.com/repos/30lnewcomb-byte/ori-mechanic"
+    },
+    {
+      "id": "render-platform",
+      "name": "Render platform",
+      "description": "Render's own public platform status, including incidents affecting hosted services.",
+      "state": "unmonitored",
+      "url": "https://status.render.com",
+      "monitorUrl": "https://status.render.com/api/v2/status.json"
+    },
+    {
+      "id": "vercel-platform",
+      "name": "Vercel platform",
+      "description": "Vercel's own public platform status, including deployments, hosting, and dashboard availability.",
+      "state": "unmonitored",
+      "url": "https://www.vercel-status.com",
+      "monitorUrl": "https://www.vercel-status.com/api/v2/status.json"
     }
   ],
   "incidents": []

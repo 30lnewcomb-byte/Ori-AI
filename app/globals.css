@@ -455,3 +455,20 @@ a:focus-visible,button:focus-visible{outline:2px solid #8bb9ff;outline-offset:4p
 .status-check-detail{display:block;margin-top:7px;color:#8290a2;font:9px/1.6 var(--font-mono)}
 .status-updated>a{color:#9bbce7;font:10px var(--font-mono);text-decoration:underline;text-underline-offset:3px}
 .status-indicator-degraded{background:#d0ad70;box-shadow:0 0 0 3px rgba(208,173,112,.12)}
+
+
+/* Status page hierarchy and provider grouping */
+.status-provider-components{padding-top:8px}
+.status-provider-components .status-section-heading{padding-top:12px}
+.status-overview{border-radius:4px}
+.status-component-copy{min-width:0}
+.status-check-detail{overflow-wrap:anywhere}
+.status-component-state{align-self:start;padding-top:3px}
+.status-component>a{min-width:22px;min-height:28px;display:inline-flex;align-items:center;justify-content:center}
+.status-updated>a{display:inline-flex;align-items:center;min-height:30px}
+.status-empty{border-top:1px solid #354150}
+@media(max-width:650px){
+ .status-component{align-items:start}
+ .status-component-state{white-space:normal;text-align:right;max-width:116px;line-height:1.5}
+ .status-check-detail{font-size:8px}
+}

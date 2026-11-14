@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": null,
+  "overall": {
+    "state": "unknown",
+    "message": "Status monitoring is being set up. Live checks are not connected yet."
+  },
+  "components": [
+    {
+      "id": "ori-ai",
+      "name": "Ori-AI website",
+      "description": "The public Ori website.",
+      "state": "unmonitored",
+      "url": "https://ori-ai-tan.vercel.app"
+    },
+    {
+      "id": "ori-platform",
+      "name": "Ori Platform",
+      "description": "The main Ori platform and intelligence services.",
+      "state": "unmonitored",
+      "url": "https://ori-platform.vercel.app"
+    },
+    {
+      "id": "ori-developer-platform",
+      "name": "Ori Developer Platform",
+      "description": "The developer workspace and documentation.",
+      "state": "unmonitored",
+      "url": "https://ori-developer-platform.vercel.app"
+    },
+    {
+      "id": "ori-mechanic",
+      "name": "Ori Mechanic",
+      "description": "Independent engineering project.",
+      "state": "unmonitored",
+      "url": "https://github.com/30lnewcomb-byte/ori-mechanic"
+    }
+  ],
+  "incidents": []
+}

@@ -107,7 +107,7 @@ export async function checkStatusComponent(
       state: "degraded",
       checkedAt,
       responseTimeMs: null,
-      checkMessage: "No monitor endpoint is configured."
+      checkMessage: "A health-check address has not been configured for this service."
     };
   }
 
@@ -193,7 +193,7 @@ export async function checkStatusComponent(
         state: "operational",
         checkedAt,
         responseTimeMs,
-        checkMessage: `Endpoint responded with HTTP ${response.status}.`
+        checkMessage: `The service responded successfully (HTTP ${response.status}).`
       };
     }
     return {
@@ -201,7 +201,7 @@ export async function checkStatusComponent(
       state: "degraded",
       checkedAt,
       responseTimeMs,
-      checkMessage: `Endpoint returned HTTP ${response.status}.`
+      checkMessage: `The service returned an error (HTTP ${response.status}).`
     };
   } catch (error) {
     const responseTimeMs = Date.now() - started;
@@ -233,8 +233,8 @@ const computeLiveStatus = async () => {
     hasDegraded ? "degraded" :
     hasMaintenance ? "maintenance" : "operational";
   const message = attention.length === 0
-    ? "All monitored Ori endpoints and provider status feeds report operational."
-    : `${attention.length} of ${components.length} monitored checks need attention. Review the individual results below; an endpoint check failure is not automatically a confirmed provider outage.`;
+    ? "All monitored Ori services and hosting platforms are reporting normal status."
+    : `${attention.length} of ${components.length} checks need attention. Select a service below to see what was detected. A failed check does not necessarily mean the hosting platform is down.`;
 
   return { components, checkedAt, overallState, message };
 };

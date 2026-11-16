@@ -87,7 +87,57 @@ export type LiveStatusSnapshot = {
   message: string;
 };
 
-const CHECK_TIMEOUT_MS = 12000;
+const CHECK_TIMEOUT_MS = 6500;
+const RETRY_DELAY_MS = 500;
+const SLOW_RESPONSE_MS = 4000;
+
+type EndpointAttempt = {
+  response: Response | null;
+  error: unknown;
+  elapsedMs: number;
+  attempts: number;
+};
+
+function isTransientStatus(status: number): boolean {
+  return status === 408 || status === 425 || status === 429 || status >= 500;
+}
+
+function isTimeoutError(error: unknown): boolean {
+  return error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
+}
+
+async function requestEndpoint(url: string, headers: HeadersInit, retryTransient: boolean): Promise<EndpointAttempt> {
+  const started = Date.now();
+  let lastResponse: Response | null = null;
+  let lastError: unknown = null;
+  const maxAttempts = retryTransient ? 2 : 1;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      lastResponse = await fetch(url, {
+        method: "GET",
+        cache: "no-store",
+        redirect: "follow",
+        signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
+        headers
+      });
+      lastError = null;
+      if (!retryTransient || !isTransientStatus(lastResponse.status) || attempt === maxAttempts) {
+        return { response: lastResponse, error: null, elapsedMs: Date.now() - started, attempts: attempt };
+      }
+    } catch (error) {
+      lastError = error;
+      lastResponse = null;
+      if (attempt === maxAttempts) {
+        return { response: null, error, elapsedMs: Date.now() - started, attempts: attempt };
+      }
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+  }
+
+  return { response: lastResponse, error: lastError, elapsedMs: Date.now() - started, attempts: maxAttempts };
+}
 
 // Private runtime URLs live only in server-side environment variables.
 function getMonitorUrl(component: StatusComponent): string | undefined {
@@ -107,31 +157,52 @@ export async function checkStatusComponent(
       state: "degraded",
       checkedAt,
       responseTimeMs: null,
-      checkMessage: "A health-check address has not been configured for this service."
+      checkMessage: "Monitoring is not fully configured for this service, so its availability could not be checked."
     };
   }
 
-  const started = Date.now();
-  try {
-    const response = await fetch(monitorUrl, {
-      method: "GET",
-      cache: "no-store",
-      redirect: "follow",
-      signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
-      headers: component.id === "ori-mechanic"
-        ? { Accept: "application/vnd.github+json", "User-Agent": "Ori-Status-Monitor" }
-        : { Accept: "application/json,text/html,*/*" }
-    });
-    const responseTimeMs = Date.now() - started;
-    if (response.ok && (component.id === "render-platform" || component.id === "vercel-platform")) {
+  const isProvider = component.id === "render-platform" || component.id === "vercel-platform";
+  const headers = component.id === "ori-mechanic"
+    ? { Accept: "application/vnd.github+json", "User-Agent": "Ori-Status-Monitor" }
+    : { Accept: "application/json,text/html,*/*" };
+  const result = await requestEndpoint(monitorUrl, headers, !isProvider);
+  const { response, error, elapsedMs, attempts } = result;
+
+  if (error) {
+    const timeout = isTimeoutError(error);
+    return {
+      ...component,
+      state: "degraded",
+      checkedAt,
+      responseTimeMs: elapsedMs,
+      checkMessage: timeout
+        ? attempts > 1
+          ? "The service did not respond within the check time limit on either attempt. It may be starting up or temporarily slow; this is not yet a confirmed outage."
+          : "The service took too long to respond. It may be starting up or temporarily slow; this is not yet a confirmed outage."
+        : attempts > 1
+          ? "The monitor could not connect after two attempts. The service may be temporarily unreachable, or there may be a network or DNS issue."
+          : "The monitor could not connect to the service. This may be a temporary network or DNS issue."
+    };
+  }
+
+  if (!response) {
+    return {
+      ...component,
+      state: "degraded",
+      checkedAt,
+      responseTimeMs: elapsedMs,
+      checkMessage: "The monitor did not receive a response, so service availability could not be confirmed."
+    };
+  }
+
+  if (isProvider && response.ok) {
+    try {
       const payload = await response.json() as {
         status?: { indicator?: string; description?: string };
-        incidents?: Array<{ name?: string; status?: string; impact?: string }>;
-        scheduled_maintenances?: Array<{ name?: string; status?: string }>;
       };
       const indicator = payload.status?.indicator ?? "unknown";
-      const description = payload.status?.description ?? "Provider did not include a status description.";
-      const feedBase = monitorUrl.replace(/\/status\.json$/, "");
+      const description = payload.status?.description ?? "The provider did not publish a status description.";
+      const feedBase = monitorUrl.replace(/\\/status\\.json$/, "");
       const [incidentResponse, maintenanceResponse] = await Promise.all([
         fetch(`${feedBase}/incidents/unresolved.json`, {
           cache: "no-store",
@@ -159,11 +230,6 @@ export async function checkStatusComponent(
         .filter((item) => item.status !== "completed" && item.name)
         .slice(0, 2)
         .map((item) => item.name as string);
-      const detailParts = [
-        `The hosting provider reports: ${description}.`,
-        activeIncidents.length ? `Active incidents: ${activeIncidents.join("; ")}.` : "",
-        activeMaintenance.length ? `Scheduled maintenance: ${activeMaintenance.join("; ")}.` : ""
-      ].filter(Boolean);
       const activeIncidentImpact = (incidentPayload?.incidents ?? [])
         .filter((incident) => incident.status !== "resolved")
         .reduce<"none" | "minor" | "major" | "critical">((highest, incident) => {
@@ -178,44 +244,62 @@ export async function checkStatusComponent(
         indicator === "maintenance" || activeMaintenance.length > 0 ? "maintenance" :
         indicator === "minor" || activeIncidentImpact === "minor" ? "degraded" :
         indicator === "none" ? "operational" : "degraded";
-
+      const details = [
+        `The provider reports: ${description}.`,
+        activeIncidents.length ? `Active incidents: ${activeIncidents.join("; ")}.` : "",
+        activeMaintenance.length ? `Active maintenance: ${activeMaintenance.join("; ")}.` : ""
+      ].filter(Boolean);
       return {
         ...component,
         state: providerState,
         checkedAt,
-        responseTimeMs,
-        checkMessage: detailParts.join(" ")
+        responseTimeMs: elapsedMs,
+        checkMessage: details.join(" ")
       };
-    }
-    if (response.ok) {
+    } catch {
       return {
         ...component,
-        state: "operational",
+        state: "degraded",
         checkedAt,
-        responseTimeMs,
-        checkMessage: `The service responded successfully (HTTP ${response.status}).`
+        responseTimeMs: elapsedMs,
+        checkMessage: "The provider's status page responded, but its status information could not be read. The provider's condition is currently unknown."
       };
     }
+  }
+
+  if (response.ok) {
+    const slow = elapsedMs >= SLOW_RESPONSE_MS;
     return {
       ...component,
-      state: "degraded",
+      state: slow ? "degraded" : "operational",
       checkedAt,
-      responseTimeMs,
-      checkMessage: `The service returned an error (HTTP ${response.status}).`
-    };
-  } catch (error) {
-    const responseTimeMs = Date.now() - started;
-    const timedOut = error instanceof Error && error.name === "TimeoutError";
-    return {
-      ...component,
-      state: "degraded",
-      checkedAt,
-      responseTimeMs,
-      checkMessage: timedOut
-        ? "The endpoint did not respond before the 12-second check limit."
-        : "The endpoint could not be reached from the status monitor."
+      responseTimeMs: elapsedMs,
+      checkMessage: slow
+        ? `The service is reachable, but its response was slower than expected (${(elapsedMs / 1000).toFixed(1)} seconds).`
+        : attempts > 1
+          ? `The service responded successfully after a retry (HTTP ${response.status}).`
+          : `The service responded successfully (HTTP ${response.status}).`
     };
   }
+
+  const statusCode = response.status;
+  const message = statusCode === 429
+    ? "The service is reachable but is temporarily limiting requests. The monitor will check again on the next refresh."
+    : statusCode >= 500
+      ? `The service responded, but its server reported a temporary error (HTTP ${statusCode}) after ${attempts} attempt${attempts === 1 ? "" : "s"}. This does not by itself confirm a full outage.`
+      : statusCode === 404
+        ? "The host responded, but the monitored page was not found (HTTP 404). The site may be online while this address is incorrect or unavailable."
+        : statusCode >= 400
+          ? `The host responded, but access to the monitored page was refused or invalid (HTTP ${statusCode}). The site may still be reachable to visitors.`
+          : `The service returned an unexpected response (HTTP ${statusCode}).`;
+
+  return {
+    ...component,
+    state: "degraded",
+    checkedAt,
+    responseTimeMs: elapsedMs,
+    checkMessage: message
+  };
 }
 
 const computeLiveStatus = async () => {
@@ -234,7 +318,7 @@ const computeLiveStatus = async () => {
     hasMaintenance ? "maintenance" : "operational";
   const message = attention.length === 0
     ? "All monitored Ori services and hosting platforms are reporting normal status."
-    : `${attention.length} of ${components.length} checks need attention. Select a service below to see what was detected. A failed check does not necessarily mean the hosting platform is down.`;
+    : `${attention.length} of ${components.length} checks could not confirm normal operation. Open a service below for details; a slow response or one failed request is not automatically a confirmed outage.`;
 
   return { components, checkedAt, overallState, message };
 };

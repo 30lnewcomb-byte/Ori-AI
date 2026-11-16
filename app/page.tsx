@@ -12,13 +12,13 @@ export default function HomePage() {
       <section className="hero hero-editorial">
         <div className="hero-content" data-reveal>
           <div className="eyebrow"><span className="eyebrow-dot" /> PERSONAL TECHNOLOGY PROJECT</div>
-          <h1>An idea that kept <span>growing.</span></h1>
-          <p className="hero-copy">Ori began with a question about what AI to use. It became an idea to build something of its own—and grew into a collection of projects with different purposes.</p>
+          <h1>What if I built my <span>own AI?</span></h1>
+          <p className="hero-copy">Ori started with a practical question: which AI should I use? That led to another one—could I build my own? The answer became several projects, from an AI workspace to developer tools and independent engineering experiments.</p>
           <div className="hero-actions">
             <Link className="button button-primary" href="/products">Explore the projects <span aria-hidden="true">↗</span></Link>
             <Link className="button button-secondary" href="/company">Read the story</Link>
           </div>
-          <div className="hero-footnote">A personal project. Built through curiosity and experimentation.</div>
+          <div className="hero-footnote">A personal technology project. Each project has its own purpose and stage of development.</div>
         </div>
         <aside className="hero-index" aria-label="Ori project overview" data-reveal data-delay="120">
           <div className="hero-index-heading"><span>THE ORI PROJECTS</span><span>01—03</span></div>
@@ -35,16 +35,16 @@ export default function HomePage() {
       </section>
 
       <section className="intro-band section-wrap" data-reveal>
-        <p className="section-kicker">ONE IDEA, MANY DIRECTIONS</p>
+        <p className="section-kicker">HOW THE PROJECTS FIT</p>
         <div className="intro-band-content">
-          <h2>Not one app.<br /><span>A growing ecosystem.</span></h2>
-          <p>Ori is a personal technology project made up of related work: AI systems, local experiments, developer tools, and independent engineering projects. They can grow separately without losing the idea that connects them.</p>
+          <h2>One starting point.<br /><span>Several separate projects.</span></h2>
+          <p>Ori is not one app split into several names. Ori Platform is the AI workspace; Developer Platform is for developer resources; Ori Mechanic is a separate engineering project. They share an origin, but each has its own code and development path.</p>
         </div>
       </section>
 
       <section className="products-section section-wrap" data-reveal>
         <div className="section-heading">
-          <div><p className="section-kicker">THE PROJECTS</p><h2>Different jobs. Shared origins.</h2></div>
+          <div><p className="section-kicker">THE PROJECTS</p><h2>Three projects, separate roles.</h2></div>
           <Link className="text-link" href="/products">Explore all projects <span aria-hidden="true">↗</span></Link>
         </div>
         <div className="product-list">
@@ -68,9 +68,9 @@ export default function HomePage() {
       <section className="principles-section">
         <div className="section-wrap principles-editorial">
           <div className="principles-heading" data-reveal>
-            <p className="section-kicker">HOW THE WORK GROWS</p>
-            <h2>Let the work<br /><span>earn its place.</span></h2>
-            <p>Ori grows through experiments, useful discoveries, and careful improvements—not a promise that every idea is already finished.</p>
+            <p className="section-kicker">HOW THE WORK IS BUILT</p>
+            <h2>Build it. Test it.<br /><span>Show its real status.</span></h2>
+            <p>An idea stays an experiment until it works. Features and systems are described by what is available now and what is still being developed.</p>
           </div>
           <div className="principle-list" data-reveal data-delay="100">
             <article><span>01</span><div><h3>Start with a question.</h3><p>Understand the problem before choosing the technology.</p></div></article>
@@ -81,7 +81,7 @@ export default function HomePage() {
       </section>
 
       <section className="closing-cta section-wrap" data-reveal>
-        <div><p className="section-kicker">FOLLOW THE WORK</p><h2>See what is taking shape.</h2><p>Explore the projects, read about the technology, or follow development on GitHub.</p></div>
+        <div><p className="section-kicker">CURRENT PROJECTS</p><h2>Explore the work.</h2><p>See what each project does, check its development stage, or follow the code on GitHub.</p></div>
         <div className="closing-actions">
           <Link className="button button-primary" href="/developers">Developer resources <span aria-hidden="true">↗</span></Link>
           <a className="text-link" href="https://github.com/30lnewcomb-byte" target="_blank" rel="noreferrer">Ori on GitHub <span aria-hidden="true">↗</span></a>

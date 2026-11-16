@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
-import { StatusNotice } from "@/components/status-notice";
 import { SiteFooter } from "@/components/site-footer";
 import { Analytics } from "@vercel/analytics/react";
 import { MotionEnhancer } from "@/components/motion-enhancer";
@@ -29,7 +28,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body>
         <a className="skip-link" href="#main">Skip to content</a>
-        <StatusNotice />
         <SiteHeader />
         <MotionEnhancer />
         {children}

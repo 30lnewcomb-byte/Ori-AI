@@ -3,7 +3,7 @@ import Link from "next/link";
 const projects = [
   { number: "01", name: "Ori Platform", category: "AI platform", status: "Active project", description: "The user-facing chat workspace, connected to the separate Ori Intelligence runtime through a server-side API.", href: "https://ori-platform.vercel.app", action: "Open Ori Platform" },
   { number: "02", name: "Ori Developer Platform", category: "Developer workspace", status: "In development", description: "A separate workspace for developer project records and documentation. API access and model administration are still in development.", href: "https://ori-developer-platform.vercel.app", action: "Visit developer platform" },
-  { number: "03", name: "Ori Mechanic", category: "Independent engineering", status: "In development", description: "An independent engineering project in development, focused on isolated tasks and explicit permissions.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", action: "View project on GitHub" }
+  { number: "03", name: "Ori Mechanic", category: "Independent engineering", status: "In development", description: "An engineering project in development for isolated tasks and explicit permissions.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", action: "View project on GitHub" }
 ];
 
 export default function HomePage() {

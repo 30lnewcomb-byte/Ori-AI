@@ -3,20 +3,20 @@ import { PageIntro } from "@/components/page-intro";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Explore the separate projects that make up the Ori ecosystem."
+  description: "An overview of Ori Platform, Ori Developer Platform, and Ori Mechanic, including each project's role and current stage."
 };
 
 const items = [
-  { name: "Ori Platform", category: "AI platform", state: "Active project", description: "The main Ori experience and the platform work connecting its AI capabilities to an application.", href: "https://ori-platform.vercel.app", action: "Open platform" },
-  { name: "Ori Developer Platform", category: "Developer workspace", state: "In development", description: "A separate workspace for projects, models, tools, documentation, and platform configuration. Its capabilities continue to develop.", href: "https://ori-developer-platform.vercel.app", action: "Visit developer platform" },
-  { name: "Ori Mechanic", category: "Independent engineering", state: "In development", description: "An independent engineering project exploring controlled technical workflows, isolated capabilities, and explicit permissions.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", action: "View project on GitHub" }
+  { name: "Ori Platform", category: "AI platform", state: "Active project", description: "The user-facing chat workspace. It connects to the separate Ori Intelligence runtime through a server-side API.", href: "https://ori-platform.vercel.app", action: "Open platform" },
+  { name: "Ori Developer Platform", category: "Developer workspace", state: "In development", description: "A workspace for developer project records and documentation. API access and model administration are still in development.", href: "https://ori-developer-platform.vercel.app", action: "Visit developer platform" },
+  { name: "Ori Mechanic", category: "Independent engineering", state: "In development", description: "An independent engineering project in development, focused on isolated tasks and explicit permissions.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", action: "View project on GitHub" }
 ];
 
 export default function ProductsPage() {
   return (
     <main id="main" className="subpage">
       <div className="section-wrap">
-        <PageIntro eyebrow="THE ORI ECOSYSTEM" title="Projects with separate responsibilities." description="Ori includes an AI workspace, a developer workspace, and independent engineering work. The projects share an origin, but each is developed separately." />
+        <PageIntro eyebrow="PROJECT DIRECTORY" title="Three projects, separate responsibilities." description="Ori Platform is the user-facing AI workspace. Developer Platform provides developer project records and documentation. Ori Mechanic is an independent engineering project." />
         <div className="catalog-list">
           {items.map((item, i) => (
             <article className="catalog-item" key={item.name} data-reveal data-delay={i * 70}>
@@ -29,7 +29,7 @@ export default function ProductsPage() {
             </article>
           ))}
         </div>
-        <div className="note-panel" data-reveal><span className="note-symbol">i</span><p>These projects are not all at the same stage. Active work, public destinations, and features still being developed are described separately.</p></div>
+        <div className="note-panel" data-reveal><span className="note-symbol">i</span><p>Ori Intelligence is the separate runtime used by Ori Platform. It has no public-facing application of its own.</p></div>
       </div>
     </main>
   );

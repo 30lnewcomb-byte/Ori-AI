@@ -9,14 +9,14 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: {
-    default: "Ori — One idea. Many projects.",
+    default: "Ori — Independent AI and software projects",
     template: "%s — Ori"
   },
-  description: "Ori is a personal technology project that grew from one question into AI systems, local experiments, developer tools, and independent software projects.",
+  description: "Ori is a personal project with a chat workspace, a separate AI runtime, a developer workspace, and independent engineering work.",
   icons: { icon: "/ori-mark.svg" },
   openGraph: {
-    title: "Ori — One idea. Many projects.",
-    description: "A personal technology project, built through curiosity and experimentation.",
+    title: "Ori — Independent AI and software projects",
+    description: "Explore Ori's projects, their architecture, and current development status.",
     siteName: "Ori",
     type: "website"
   },

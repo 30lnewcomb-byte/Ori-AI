@@ -4,7 +4,7 @@ import { StatusNoticeClient } from "@/components/status-notice-client";
 export async function StatusNotice() {
   const live = (await getLiveStatus()) as LiveStatusSnapshot;
   const affected = live.components.filter((component) =>
-    component.state !== "operational" && component.state !== "unmonitored"
+    component.state !== "operational"
   );
   if (affected.length === 0) return null;
 

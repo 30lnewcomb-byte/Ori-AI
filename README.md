@@ -1,6 +1,6 @@
 # Ori — official website
 
-The public company and ecosystem website for Ori. This repository is intentionally separate from Ori Platform, Ori Developer Platform, and Ori Mechanic.
+The public website for Ori's projects, technical overview, research notes, updates, and service status. This repository is intentionally separate from Ori Platform, Ori Developer Platform, and Ori Mechanic.
 
 ## Stack
 
@@ -33,7 +33,7 @@ npm start
 - `/technology` — engineering and technology overview
 - `/research` — research and experiments
 - `/developers` — developer platform and documentation links
-- `/company` — about Ori\n- `/status` — service status and incident history
+- `/company` — the history and purpose of Ori\n- `/status` — live checks for Ori services and hosting providers
 - `/updates` — announcements and release notes
 
 ## Deployment
@@ -47,6 +47,9 @@ Do not connect this repository to the deployment projects for Ori Platform or Or
 - Do not publish fabricated research, release notes, customer stories, testimonials, metrics, or product capabilities.
 - Clearly distinguish working products from features that are still being developed.
 - Update product links only when the destination is real and verified.
-- Keep the company site focused on the Ori organization; product applications remain in their own repositories and deployments.
+- Keep this site focused on Ori's projects and their current status; each application remains in its own repository and deployment.
 
-\n## Status publishing\n\nThe public status page reads `data/status.json`. See `docs/STATUS-AUTOMATION.md` for the schema and the review-first workflow intended for future Ori Mechanic integration. Statuses must be backed by verified checks; unmonitored services must remain labeled as unmonitored.\n
+
+## Status publishing
+
+The public status page reads `data/status.json` and runs point-in-time checks when visitors open or refresh the page. Do not label a service operational unless a check confirms that result. Unmonitored services must remain clearly labeled.

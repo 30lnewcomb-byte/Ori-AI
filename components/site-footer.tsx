@@ -12,7 +12,7 @@ export function SiteFooter() {
       <div className="footer-main">
         <div className="footer-brand">
           <Link className="brand" href="/"><span className="brand-mark" aria-hidden="true"><span /></span><span>ori</span></Link>
-          <p>One idea. Many projects. Still growing.</p>
+          <p>A personal AI and software project.</p>
         </div>
         {groups.map((group) => (
           <div className="footer-group" key={group.title}>

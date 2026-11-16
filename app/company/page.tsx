@@ -4,7 +4,7 @@ import { PageIntro } from "@/components/page-intro";
 export const metadata: Metadata = {
   title: "About Ori",
   description:
-    "The story behind Ori: one question, a collection of experiments, and an ecosystem that grew over time.",
+    "The story of how a personal AI experiment grew into separate software and engineering projects.",
 };
 
 export default function CompanyPage() {
@@ -14,7 +14,7 @@ export default function CompanyPage() {
         <PageIntro
           eyebrow="ABOUT ORI"
           title="An idea that kept growing."
-          description="Ori began with a simple question: what AI should I use? It grew from that question into a personal project made up of experiments, tools, and projects with different purposes."
+          description="Ori began when I was deciding which AI to use. I started experimenting with building one myself, and the work grew into several separate projects."
         />
 
         <section className="company-story" aria-labelledby="company-origin-title">
@@ -28,10 +28,7 @@ export default function CompanyPage() {
               I built a custom one?
             </p>
             <p>
-              That question became the thread running through Ori. It was not
-              the beginning of a carefully planned company or a ready-made
-              product ecosystem. It was an idea worth exploring, surrounded by
-              other ideas and projects that could help it take shape.
+              At first, this was a personal experiment—not a company or a planned product suite. I built local tools and model prototypes to explore what was possible. As the work grew, some projects needed their own codebases and responsibilities.
             </p>
           </div>
 
@@ -51,22 +48,14 @@ export default function CompanyPage() {
         <section className="story-section" aria-labelledby="story-growth-title">
           <div className="story-section-heading">
             <span className="section-kicker">HOW IT GREW</span>
-            <h2 id="story-growth-title">Not one big launch. A lot of experiments.</h2>
+            <h2 id="story-growth-title">From local experiments to separate projects.</h2>
           </div>
           <div className="story-growth-copy">
             <p>
-              The early projects were mostly designed to run locally. That
-              made room to experiment with software, models, and ideas close
-              to the systems they were built for. Some experiments became
-              useful pieces of a larger project; others opened up entirely new
-              directions.
+              The first projects mostly ran locally. That made it practical to test software and model ideas on the hardware available at the time. The work was hands-on: build something, see where it failed, and adjust it.
             </p>
             <p>
-              As the work developed, those directions began to need their own
-              tools and responsibilities. Some stayed focused on local
-              computing, while others grew into platforms and hosted services.
-              The ecosystem took shape gradually, as a result of the work—not
-              because every part had been mapped out at the beginning.
+              Later, different needs led to separate applications and services. Ori Platform became the user-facing workspace; Developer Platform holds developer project records and documentation; Ori Mechanic remains an independent engineering project.
             </p>
           </div>
 
@@ -74,40 +63,36 @@ export default function CompanyPage() {
             <article>
               <span>01</span>
               <div>
-                <h3>Start with a question.</h3>
+                <h3>Local prototypes</h3>
                 <p>
-                  Explore what already exists, then consider what could be
-                  built instead.
+                  Early experiments tested software and model ideas on local machines.
                 </p>
               </div>
             </article>
             <article>
               <span>02</span>
               <div>
-                <h3>Experiment locally.</h3>
+                <h3>Separate codebases</h3>
                 <p>
-                  Build and test ideas in hands-on projects, learning from
-                  what works and what needs to change.
+                  Projects moved into their own repositories as their responsibilities diverged.
                 </p>
               </div>
             </article>
             <article>
               <span>03</span>
               <div>
-                <h3>Give each idea its purpose.</h3>
+                <h3>Hosted workspaces</h3>
                 <p>
-                  Let separate projects develop around the problems and
-                  capabilities they are meant to address.
+                  Ori Platform and Ori Developer Platform became separately deployed web applications.
                 </p>
               </div>
             </article>
             <article>
               <span>04</span>
               <div>
-                <h3>Grow the ecosystem.</h3>
+                <h3>Independent engineering</h3>
                 <p>
-                  Connect the work where it makes sense, without forcing every
-                  project to become the same thing.
+                  Ori Mechanic continues as a separate project with its own development and permission boundaries.
                 </p>
               </div>
             </article>
@@ -119,9 +104,7 @@ export default function CompanyPage() {
             <span className="section-kicker">THE ORI PROJECTS</span>
             <h2 id="ecosystem-title">Different projects. Different jobs.</h2>
             <p>
-              Ori is a collection of related projects, not one product wearing
-              several names. Each has a role of its own, while contributing to
-              the wider idea.
+              The projects share an origin, but each has its own codebase and responsibility.
             </p>
           </div>
 
@@ -131,8 +114,7 @@ export default function CompanyPage() {
               <div>
                 <h3>Ori Platform</h3>
                 <p>
-                  The platform layer for working with Ori's intelligence and
-                  connecting its capabilities to the wider project.
+                  The user-facing chat workspace. It connects to Ori Intelligence through a server-side API.
                 </p>
               </div>
             </article>
@@ -141,9 +123,7 @@ export default function CompanyPage() {
               <div>
                 <h3>Ori Mechanic</h3>
                 <p>
-                  A separate technical system being developed for engineering
-                  work and complex workflows, with its own tools and
-                  safeguards.
+                  An independent project in development for isolated software tasks, explicit permissions, and human review.
                 </p>
               </div>
             </article>
@@ -152,44 +132,36 @@ export default function CompanyPage() {
               <div>
                 <h3>Ori Developer Platform</h3>
                 <p>
-                  A dedicated workspace for developers working with Ori's
-                  tools, models, and platform capabilities.
+                  A separate workspace for developer project records and public documentation. API access and model administration are still in development.
                 </p>
               </div>
             </article>
           </div>
           <p className="ecosystem-footnote">
-            The projects can evolve independently. Their connection is the
-            original curiosity that brought them into existence.
+            The projects can be developed and deployed independently; Ori Platform connects to its own intelligence runtime through a server-side API.
           </p>
         </section>
 
         <section className="story-values" aria-labelledby="values-title">
           <div className="story-section-heading">
             <span className="section-kicker">WHAT GUIDES THE WORK</span>
-            <h2 id="values-title">Built around curiosity.</h2>
+            <h2 id="values-title">What shapes the engineering decisions.</h2>
           </div>
           <div className="story-values-grid">
             <article>
-              <span>01 / EXPLORE</span>
-              <h3>Stay curious.</h3>
-              <p>Ask questions, try ideas, and keep learning how things work.</p>
+              <span>01 / COST</span>
+              <h3>Use what is available.</h3>
+              <p>Prefer existing hardware, local development, and free services when they meet the requirement.</p>
             </article>
             <article>
-              <span>02 / BE HONEST</span>
-              <h3>Be precise.</h3>
-              <p>
-                Test the details, explain limitations, and don't claim more
-                than the work can support.
-              </p>
+              <span>02 / BOUNDARIES</span>
+              <h3>Keep responsibilities separate.</h3>
+              <p>Give applications, runtimes, and engineering tools clear interfaces and ownership.</p>
             </article>
             <article>
-              <span>03 / BUILD</span>
-              <h3>Build with care.</h3>
-              <p>
-                Make thoughtful choices about the people, tools, and systems
-                involved.
-              </p>
+              <span>03 / STATUS</span>
+              <h3>Describe what exists.</h3>
+              <p>Document current behavior and limitations; do not present planned features as available.</p>
             </article>
           </div>
         </section>
@@ -197,12 +169,9 @@ export default function CompanyPage() {
         <section className="personal-project" aria-labelledby="personal-project-title">
           <div className="personal-project-copy">
             <span className="section-kicker">PERSONAL BY DESIGN</span>
-            <h2 id="personal-project-title">Technology should be approachable.</h2>
+            <h2 id="personal-project-title">Keep the basic experience accessible.</h2>
             <p>
-              Ori is a personal project, and that shapes how it is shared.
-              People can use Ori without being asked to pay for a subscription
-              or an access plan. The point is to make the work available and
-              give people room to explore what it can do.
+              Ori Platform currently does not require a paid subscription to create an account. Hosting and compute still use real resources; the project aims to keep required paid services out of the basic experience and make any necessary costs clear.
             </p>
           </div>
           <aside className="sundae-note">
@@ -220,12 +189,9 @@ export default function CompanyPage() {
 
         <section className="about-ending" aria-labelledby="about-ending-title">
           <span className="section-kicker">STILL GROWING</span>
-          <h2 id="about-ending-title">One idea became many projects. Those projects became Ori.</h2>
+          <h2 id="about-ending-title">The projects are still in development.</h2>
           <p>
-            Ori is still being built. The technology will change, the projects
-            will develop, and new ideas may find their place. What stays the
-            same is the reason to keep building: curiosity, experimentation,
-            and the possibility of making something useful.
+            The projects have different release schedules and levels of readiness. Their current roles and availability are listed on the Projects and Status pages. Release notes will appear here when changes are deployed.
           </p>
         </section>
 

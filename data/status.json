@@ -9,7 +9,7 @@
     {
       "id": "ori-ai",
       "name": "Ori-AI website",
-      "description": "The public Ori website.",
+      "description": "The main public website for Ori, including product information, company details, and links to Ori projects.",
       "state": "unmonitored",
       "url": "https://ori-ai-tan.vercel.app",
       "monitorUrl": "https://ori-ai-tan.vercel.app/"
@@ -17,7 +17,7 @@
     {
       "id": "ori-platform",
       "name": "Ori Platform",
-      "description": "The main Ori Platform web application.",
+      "description": "The primary Ori application, where users access the platform’s AI features and workspace.",
       "state": "unmonitored",
       "url": "https://ori-platform.vercel.app",
       "monitorUrl": "https://ori-platform.vercel.app/"
@@ -25,19 +25,19 @@
     {
       "id": "ori-intelligence",
       "name": "Ori Intelligence runtime",
-      "description": "The intelligence API used by Ori Platform.",
+      "description": "The backend service that provides AI inference and intelligence capabilities to Ori Platform.",
       "state": "unmonitored"
     },
     {
       "id": "ori-vm-runtime",
       "name": "Ori VM runtime",
-      "description": "The VM service used by Ori Platform.",
+      "description": "The virtual-machine runtime that supports isolated computing tasks for Ori Platform.",
       "state": "unmonitored"
     },
     {
       "id": "ori-developer-platform",
       "name": "Ori Developer Platform",
-      "description": "The developer workspace and documentation.",
+      "description": "The developer-focused website for Ori tools, technical documentation, and integration guidance.",
       "state": "unmonitored",
       "url": "https://ori-developer-platform.vercel.app",
       "monitorUrl": "https://ori-developer-platform.vercel.app/"
@@ -45,7 +45,7 @@
     {
       "id": "ori-mechanic",
       "name": "Ori Mechanic",
-      "description": "Independent engineering project repository. This check verifies repository availability, not whether Mechanic's unfinished runtime is operational.",
+      "description": "Ori Mechanic is an independent engineering project. This check confirms that its public project repository is reachable; it does not test a running service.",
       "state": "unmonitored",
       "url": "https://github.com/30lnewcomb-byte/ori-mechanic",
       "monitorUrl": "https://api.github.com/repos/30lnewcomb-byte/ori-mechanic"
@@ -53,7 +53,7 @@
     {
       "id": "render-platform",
       "name": "Render platform",
-      "description": "Render's own public platform status, including incidents affecting hosted services.",
+      "description": "Render provides hosting for some Ori services. This listing reflects incidents and maintenance reported across Render’s platform.",
       "state": "unmonitored",
       "url": "https://status.render.com",
       "monitorUrl": "https://status.render.com/api/v2/status.json"
@@ -61,7 +61,7 @@
     {
       "id": "vercel-platform",
       "name": "Vercel platform",
-      "description": "Vercel's own public platform status, including deployments, hosting, and dashboard availability.",
+      "description": "Vercel hosts Ori websites. This listing reflects incidents and maintenance reported across Vercel’s platform.",
       "state": "unmonitored",
       "url": "https://www.vercel-status.com",
       "monitorUrl": "https://www.vercel-status.com/api/v2/status.json"

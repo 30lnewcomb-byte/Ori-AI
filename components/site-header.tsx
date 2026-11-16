@@ -9,7 +9,8 @@ const links = [
   { href: "/technology", label: "Technology" },
   { href: "/research", label: "Research" },
   { href: "/developers", label: "Developers" },
-  { href: "/company", label: "About" }
+  { href: "/company", label: "About" },
+  { href: "/contact", label: "Contact" }
 ];
 
 export function SiteHeader() {

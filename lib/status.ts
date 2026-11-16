@@ -162,7 +162,7 @@ export async function checkStatusComponent(
   }
 
   const isProvider = component.id === "render-platform" || component.id === "vercel-platform";
-  const headers = component.id === "ori-mechanic"
+  const headers: Record<string, string> = component.id === "ori-mechanic"
     ? { Accept: "application/vnd.github+json", "User-Agent": "Ori-Status-Monitor" }
     : { Accept: "application/json,text/html,*/*" };
   const result = await requestEndpoint(monitorUrl, headers, !isProvider);

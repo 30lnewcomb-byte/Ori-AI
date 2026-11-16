@@ -6,7 +6,7 @@ export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "System status",
-  description: "Live endpoint checks and incident updates for Ori projects."
+  description: "Check the availability of Ori websites and services, plus current hosting-provider incidents and maintenance."
 };
 
 const stateLabels: Record<ComponentState | OverallState, string> = {
@@ -43,15 +43,16 @@ export default async function StatusPage() {
       <div className="section-wrap">
         <section className="page-intro" data-reveal>
           <div className="eyebrow"><span className="eyebrow-dot" /> ORI SERVICE STATUS</div>
-          <h1>Know what’s working.</h1>
-          <p>Live checks of Ori websites and runtimes, plus Render and Vercel platform health. Provider checks read each platform’s published status feed; each check runs when this page is requested.</p>
+          <h1>Ori service status</h1>
+          <p>See whether Ori websites and services are responding, and whether the hosting platforms behind them have reported wider problems. Each service listing explains what it does and what the latest check could verify.</p>
         </section>
 
         <section className="status-overview" aria-labelledby="overall-status-title" aria-live="polite">
           <div className="status-overview-main">
-            <span className="section-kicker">LATEST CHECK</span>
+            <span className="section-kicker">CURRENT SERVICE HEALTH</span>
             <h2 id="overall-status-title">{stateLabels[live.overallState]}</h2>
             <p>{live.message}</p>
+            <p className="status-explainer">Operational means the check succeeded. Degraded means a service did not respond as expected or a provider reported a minor issue. An outage means a provider has reported a major incident. Maintenance indicates planned or active maintenance.</p>
           </div>
           <div className="status-updated">
             <span>LAST CHECKED</span>
@@ -62,7 +63,7 @@ export default async function StatusPage() {
 
         <section className="status-components" aria-labelledby="components-title">
           <div className="status-section-heading">
-            <div><span className="section-kicker">LIVE ENDPOINT CHECKS</span><h2 id="components-title">Ori services</h2></div>
+            <div><span className="section-kicker">ORI PRODUCTS & SERVICES</span><h2 id="components-title">Ori services</h2></div>
             <span className="status-count">{oriComponents.length} checks</span>
           </div>
           <div className="status-component-list">
@@ -88,7 +89,7 @@ export default async function StatusPage() {
 
         <section className="status-components status-provider-components" aria-labelledby="providers-title">
           <div className="status-section-heading">
-            <div><span className="section-kicker">HOSTING & INFRASTRUCTURE</span><h2 id="providers-title">Platform providers</h2></div>
+            <div><span className="section-kicker">HOSTING INFRASTRUCTURE</span><h2 id="providers-title">Hosting platforms</h2></div>
             <span className="status-count">{providerComponents.length} provider feeds</span>
           </div>
           <div className="status-component-list">
@@ -114,12 +115,12 @@ export default async function StatusPage() {
 
         <section className="status-incidents" aria-labelledby="incidents-title">
           <div className="status-section-heading">
-            <div><span className="section-kicker">SERVICE HISTORY</span><h2 id="incidents-title">Incident updates</h2></div>
+            <div><span className="section-kicker">RECENT SERVICE NOTICES</span><h2 id="incidents-title">Incidents and maintenance</h2></div>
           </div>
           {incidents.length === 0 ? (
             <div className="status-empty">
               <span className="status-empty-mark" aria-hidden="true">—</span>
-              <div><h3>No incidents published</h3><p>When an incident or scheduled maintenance needs to be shared, its updates will appear here.</p></div>
+              <div><h3>No active or recent incidents</h3><p>There are no incident updates published here right now. If a service disruption or scheduled maintenance is reported, its status and updates will appear in this section.</p></div>
             </div>
           ) : (
             <div className="status-incident-list">
@@ -138,7 +139,7 @@ export default async function StatusPage() {
           )}
         </section>
 
-        <p className="status-footnote">Checks run when this page is opened or refreshed; they are not yet continuous background monitoring and no historical uptime is stored. Provider status comes from Render’s and Vercel’s published status feeds. Ori service checks test public endpoints, so a failed endpoint check can be caused by a cold start or network issue and is not automatically a confirmed provider outage. Ori Mechanic’s check verifies repository availability only, not runtime readiness.</p>
+        <section className="status-footnote" aria-label="About these status checks"><h2>About these updates</h2><p>Service checks run when this page is loaded or refreshed. They show a point-in-time result, not a continuous uptime history or an uptime percentage. Hosting-platform updates come from the platforms’ own published status feeds.</p><p>A failed service check does not automatically mean the hosting provider is down. A service may be starting up, temporarily unreachable, or experiencing an issue of its own. The Ori Mechanic listing checks whether its public project repository can be reached; it does not yet measure a running Mechanic service.</p></section>
       </div>
     </main>
   );

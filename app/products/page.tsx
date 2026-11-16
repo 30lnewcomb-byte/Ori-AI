@@ -16,7 +16,7 @@ export default function ProductsPage() {
   return (
     <main id="main" className="subpage">
       <div className="section-wrap">
-        <PageIntro eyebrow="THE ORI ECOSYSTEM" title="Different projects. A shared starting point." description="Ori grew from one idea into several projects. Each has its own purpose and pace, while contributing to the wider ecosystem." />
+        <PageIntro eyebrow="THE ORI ECOSYSTEM" title="Projects with separate responsibilities." description="Ori includes an AI workspace, a developer workspace, and independent engineering work. The projects share an origin, but each is developed separately." />
         <div className="catalog-list">
           {items.map((item, i) => (
             <article className="catalog-item" key={item.name} data-reveal data-delay={i * 70}>

@@ -8,17 +8,17 @@ export const metadata: Metadata = {
 };
 
 const areas = [
-  { number: "01", label: "INTELLIGENCE", title: "AI systems and model work", description: "Ori explores model integration, inference, and the software needed to make AI useful inside real applications. Different models and approaches are evaluated for different roles.", detail: "MODELS / INFERENCE / INTEGRATION" },
-  { number: "02", label: "EXPERIMENTATION", title: "A local-first beginning", description: "Many of the early projects were designed to run locally. That made it possible to experiment close to the software and hardware involved, without making every idea depend on a hosted service.", detail: "LOCAL DEVELOPMENT / PROTOTYPES" },
-  { number: "03", label: "INFRASTRUCTURE", title: "Separate systems with clear jobs", description: "As the work grew, some projects developed into their own platforms and services. Keeping responsibilities separate makes each project easier to understand and evolve.", detail: "PLATFORMS / DEPLOYMENTS / SERVICES" },
-  { number: "04", label: "ENGINEERING", title: "Tools with boundaries", description: "Projects such as Ori Mechanic explore how software can support technical work while keeping permissions, isolation, and human oversight part of the design.", detail: "PERMISSIONS / ISOLATION / CONTROL" }
+  { number: "01", label: "MODEL RUNTIME", title: "A separate AI runtime", description: "Ori Intelligence runs separately from the Ori Platform web app. The platform calls the runtime through a server-side API, keeping model execution and web delivery in separate services.", detail: "TENSORFLOW / KERAS / API" },
+  { number: "02", label: "LOCAL DEVELOPMENT", title: "Experiments close to the machine", description: "Many early Ori projects were designed to run locally. That made it possible to test software and model ideas on the systems they were built for, without requiring every experiment to use a hosted service.", detail: "LOCAL TESTING / PROTOTYPES" },
+  { number: "03", label: "DEPLOYMENT", title: "Apps and services deploy separately", description: "The public website, user-facing platform, developer workspace, and AI runtime are separate projects. Each can be changed and deployed without bundling every part into one release.", detail: "WEBSITE / APPS / RUNTIME" },
+  { number: "04", label: "PERMISSIONED WORKFLOWS", title: "Engineering tools with safeguards", description: "Ori Mechanic is being developed as an independent engineering system. Its design focuses on isolated tasks, explicit permissions, and human review; it is still a work in progress.", detail: "ISOLATION / PERMISSIONS / REVIEW" }
 ];
 
 export default function TechnologyPage() {
   return (
     <main id="main" className="subpage">
       <div className="section-wrap">
-        <PageIntro eyebrow="UNDER THE HOOD" title="Built around the job, not a single stack." description="Ori's technology has grown alongside its projects—from local experiments to AI systems, developer tools, and hosted infrastructure. The approach depends on what each project needs." />
+        <PageIntro eyebrow="ENGINEERING APPROACH" title="Separate systems for separate work." description="Ori uses different environments for its website, user-facing platform, AI runtime, and local experiments. Keeping them separate makes each part easier to test, maintain, and deploy." />
         <div className="technology-list">
           {areas.map((area) => (
             <article className="technology-row" key={area.number} data-reveal>

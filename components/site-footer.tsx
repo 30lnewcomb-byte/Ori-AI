@@ -3,7 +3,7 @@ import Link from "next/link";
 const groups = [
   { title: "Explore", links: [{ label: "Projects", href: "/products" }, { label: "Technology", href: "/technology" }, { label: "Research & experiments", href: "/research" }] },
   { title: "Build", links: [{ label: "Developers", href: "/developers" }, { label: "Developer Platform", href: "https://ori-developer-platform.vercel.app" }, { label: "Documentation", href: "https://ori-developer-platform.vercel.app/docs" }] },
-  { title: "Ori", links: [{ label: "About", href: "/company" }, { label: "Updates", href: "/updates" }, { label: "System status", href: "/status" }, { label: "GitHub", href: "https://github.com/30lnewcomb-byte" }] }
+  { title: "Ori", links: [{ label: "About", href: "/company" }, { label: "Contact", href: "/contact" }, { label: "Updates", href: "/updates" }, { label: "System status", href: "/status" }, { label: "GitHub", href: "https://github.com/30lnewcomb-byte" }] }
 ];
 
 export function SiteFooter() {

@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import rawStatus from "@/data/status.json";
 
 export type ComponentState =
@@ -116,7 +115,8 @@ export async function checkStatusComponent(
   try {
     const response = await fetch(monitorUrl, {
       method: "GET",
-            redirect: "follow",
+      cache: "no-store",
+      redirect: "follow",
       signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
       headers: component.id === "ori-mechanic"
         ? { Accept: "application/vnd.github+json", "User-Agent": "Ori-Status-Monitor" }
@@ -134,11 +134,13 @@ export async function checkStatusComponent(
       const feedBase = monitorUrl.replace(/\/status\.json$/, "");
       const [incidentResponse, maintenanceResponse] = await Promise.all([
         fetch(`${feedBase}/incidents/unresolved.json`, {
-                    signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
+          cache: "no-store",
+          signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
           headers: { Accept: "application/json" }
         }).catch(() => null),
         fetch(`${feedBase}/scheduled-maintenances/active.json`, {
-                    signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
+          cache: "no-store",
+          signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
           headers: { Accept: "application/json" }
         }).catch(() => null)
       ]);
@@ -158,7 +160,7 @@ export async function checkStatusComponent(
         .slice(0, 2)
         .map((item) => item.name as string);
       const detailParts = [
-        `Provider status: ${description} (indicator: ${indicator}).`,
+        `The hosting provider reports: ${description}.`,
         activeIncidents.length ? `Active incidents: ${activeIncidents.join("; ")}.` : "",
         activeMaintenance.length ? `Scheduled maintenance: ${activeMaintenance.join("; ")}.` : ""
       ].filter(Boolean);
@@ -237,8 +239,4 @@ const computeLiveStatus = async () => {
   return { components, checkedAt, overallState, message };
 };
 
-export const getLiveStatus = unstable_cache(
-  computeLiveStatus,
-  ["ori-live-status-v2"],
-  { revalidate: 60, tags: ["ori-live-status"] }
-);
+export const getLiveStatus = computeLiveStatus;

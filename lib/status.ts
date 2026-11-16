@@ -202,7 +202,7 @@ export async function checkStatusComponent(
       };
       const indicator = payload.status?.indicator ?? "unknown";
       const description = payload.status?.description ?? "The provider did not publish a status description.";
-      const feedBase = monitorUrl.replace(/\\/status\\.json$/, "");
+      const feedBase = monitorUrl.replace(/\/status\.json$/, "");
       const [incidentResponse, maintenanceResponse] = await Promise.all([
         fetch(`${feedBase}/incidents/unresolved.json`, {
           cache: "no-store",

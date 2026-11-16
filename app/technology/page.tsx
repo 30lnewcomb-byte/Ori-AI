@@ -4,7 +4,7 @@ import { PageIntro } from "@/components/page-intro";
 
 export const metadata: Metadata = {
   title: "Technology",
-  description: "Explore the engineering ideas behind Ori's AI systems, local experiments, and software projects."
+  description: "How Ori separates its TensorFlow-based AI runtime, local prototypes, web applications, and engineering tools."
 };
 
 const areas = [

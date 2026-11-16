@@ -20,17 +20,61 @@ export default function HomePage() {
           </div>
           <div className="hero-footnote">A personal technology project. Each project has its own purpose and stage of development.</div>
         </div>
-        <aside className="hero-index" aria-label="Ori project overview" data-reveal data-delay="120">
-          <div className="hero-index-heading"><span>THE ORI PROJECTS</span><span>01—03</span></div>
-          {projects.map((project) => (
-            <a className="hero-index-row" href={project.href} key={project.number} target="_blank" rel="noreferrer">
-              <span className="hero-index-number">{project.number}</span>
-              <span className="hero-index-copy"><strong>{project.name}</strong><small>{project.category}</small></span>
-              <span className={project.status === "Active project" ? "project-status status-active" : "project-status"}>{project.status}</span>
-              <span className="hero-index-arrow" aria-hidden="true">↗</span>
-            </a>
-          ))}
-          <p className="hero-index-note">Each project has its own role. Work in progress is labeled plainly.</p>
+        <aside className="architecture-card" aria-labelledby="architecture-title" data-reveal data-delay="120">
+          <div className="architecture-card-header">
+            <div>
+              <span className="architecture-kicker">ORI SYSTEM MAP</span>
+              <h2 id="architecture-title">Related projects. Separate systems.</h2>
+            </div>
+            <span className="architecture-card-index">01—04</span>
+          </div>
+
+          <div className="architecture-core">
+            <article className="architecture-node architecture-node-primary">
+              <span className="architecture-node-mark" aria-hidden="true">O</span>
+              <div className="architecture-node-copy">
+                <strong>Ori Platform</strong>
+                <small>User-facing AI workspace</small>
+              </div>
+              <span className="architecture-node-tag">WORKSPACE</span>
+            </article>
+
+            <div className="architecture-connection">
+              <span className="architecture-connection-line" aria-hidden="true" />
+              <span>AUTHENTICATED SERVER API</span>
+              <span className="architecture-connection-line" aria-hidden="true" />
+            </div>
+
+            <article className="architecture-node architecture-node-runtime">
+              <span className="architecture-node-mark runtime" aria-hidden="true">01</span>
+              <div className="architecture-node-copy">
+                <strong>Ori Intelligence</strong>
+                <small>Separate TensorFlow / Keras runtime</small>
+              </div>
+              <span className="architecture-node-tag">RUNTIME</span>
+            </article>
+          </div>
+
+          <div className="architecture-secondary-heading">
+            <span>INDEPENDENT PROJECTS</span>
+            <span>02—03</span>
+          </div>
+          <div className="architecture-secondary-grid">
+            <article className="architecture-secondary-card">
+              <span className="architecture-secondary-mark" aria-hidden="true">↗</span>
+              <strong>Ori Developer Platform</strong>
+              <small>Developer workspace</small>
+            </article>
+            <article className="architecture-secondary-card">
+              <span className="architecture-secondary-mark" aria-hidden="true">◇</span>
+              <strong>Ori Mechanic</strong>
+              <small>Independent engineering project</small>
+            </article>
+          </div>
+
+          <p className="architecture-note">
+            Ori Platform calls its intelligence runtime through a server-side API. The other projects have their own codebases and responsibilities.
+          </p>
         </aside>
       </section>
 

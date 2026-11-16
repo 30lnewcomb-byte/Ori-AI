@@ -44,7 +44,7 @@ export default async function StatusPage() {
         <section className="page-intro" data-reveal>
           <div className="eyebrow"><span className="eyebrow-dot" /> ORI SERVICE STATUS</div>
           <h1>Ori service status</h1>
-          <p>See whether Ori websites and services are responding, and whether the hosting platforms behind them have reported wider problems. Each service listing explains what it does and what the latest check could verify.</p>
+          <p>This page checks Ori websites and services separately from Vercel and Render's published status feeds. Each result is a point-in-time check.</p>
         </section>
 
         <section className="status-overview" aria-labelledby="overall-status-title" aria-live="polite">
@@ -120,7 +120,7 @@ export default async function StatusPage() {
           {incidents.length === 0 ? (
             <div className="status-empty">
               <span className="status-empty-mark" aria-hidden="true">—</span>
-              <div><h3>No active or recent incidents</h3><p>There are no incident updates published here right now. If a service disruption or scheduled maintenance is reported, its status and updates will appear in this section.</p></div>
+              <div><h3>No active or recent incidents</h3><p>New incident or maintenance updates will appear here when they are published.</p></div>
             </div>
           ) : (
             <div className="status-incident-list">

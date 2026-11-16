@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const items = [
   { name: "Ori Platform", category: "AI platform", state: "Active project", description: "The user-facing chat workspace. It connects to the separate Ori Intelligence runtime through a server-side API.", href: "https://ori-platform.vercel.app", action: "Open platform" },
   { name: "Ori Developer Platform", category: "Developer workspace", state: "In development", description: "A workspace for developer project records and documentation. API access and model administration are still in development.", href: "https://ori-developer-platform.vercel.app", action: "Visit developer platform" },
-  { name: "Ori Mechanic", category: "Independent engineering", state: "In development", description: "An independent engineering project in development, focused on isolated tasks and explicit permissions.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", action: "View project on GitHub" }
+  { name: "Ori Mechanic", category: "Independent engineering", state: "In development", description: "An engineering project in development for isolated tasks and explicit permissions.", href: "https://github.com/30lnewcomb-byte/ori-mechanic", action: "View project on GitHub" }
 ];
 
 export default function ProductsPage() {
